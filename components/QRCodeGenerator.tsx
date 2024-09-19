@@ -70,7 +70,7 @@ export default function QRCodeGenerator() {
             <div className="mb-4 w-full flex items-start">
               <h2 className="text-lg font-semibold mb-2 mr-4">QR Code:</h2> {/* Added margin-right */}
               <div className="bg-gray-100 p-4 rounded-md">
-                <img src={qrCode} alt="QR Code" className="w-48 h-48" />
+                <img src={qrCode} alt="QR Code" className="w-48 h-48 object-contain" />
               </div>
               <Button
                 variant="outline"
