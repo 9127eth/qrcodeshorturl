@@ -10,14 +10,38 @@ export default function QRCodeGenerator() {
   const [shortUrl, setShortUrl] = useState('');
   const [qrCode, setQrCode] = useState('');
 
-  const handleGenerateQRCode = () => {
-    console.log('Generating QR code for:', url);
-    setQrCode('QR code placeholder');
+  const handleGenerateQRCode = async () => {
+    try {
+      const response = await fetch('/api/qrcode', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+      });
+
+      const data = await response.json();
+      setQrCode(data.qrCodeImage);
+    } catch (error) {
+      console.error('Failed to generate QR code:', error);
+    }
   };
 
-  const handleShortenUrl = () => {
-    const fakeShortUrl = 'https://short.ly/' + Math.random().toString(36).substr(2, 5);
-    setShortUrl(fakeShortUrl);
+  const handleShortenUrl = async () => {
+    try {
+      const response = await fetch('/api/shorten', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ longUrl: url }),
+      });
+
+      const data = await response.json();
+      setShortUrl(data.shortUrl);
+    } catch (error) {
+      console.error('Failed to shorten URL:', error);
+    }
   };
 
   return (
@@ -41,16 +65,29 @@ export default function QRCodeGenerator() {
         </Button>
       </div>
       {(qrCode || shortUrl) && (
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
           {qrCode && (
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold mb-2">QR Code:</h2>
-              <div className="bg-gray-100 p-4 rounded-md">{qrCode}</div>
-              <Button variant="outline" className="mt-2 text-base font-semibold">Download</Button>
+            <div className="mb-4 w-full flex items-start">
+              <h2 className="text-lg font-semibold mb-2 mr-4">QR Code:</h2> {/* Added margin-right */}
+              <div className="bg-gray-100 p-4 rounded-md">
+                <img src={qrCode} alt="QR Code" className="w-48 h-48" />
+              </div>
+              <Button
+                variant="outline"
+                className="mt-2 text-base font-semibold"
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = qrCode;
+                  link.download = 'qrcode.png';
+                  link.click();
+                }}
+              >
+                Download
+              </Button>
             </div>
           )}
           {shortUrl && (
-            <div>
+            <div className="mt-4 w-full">
               <h2 className="text-lg font-semibold mb-2">Shortened URL:</h2>
               <div className="flex items-center space-x-2">
                 <Input value={shortUrl} readOnly className="text-base" />
