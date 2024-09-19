@@ -133,7 +133,16 @@ Develop a web and mobile application that serves as a QR code generator and URL 
    - Intuitive and responsive web interface.
    - Mobile-friendly design for accessibility on various devices.
 
-
+Plan for qr code and short url generation. 
+	•	Frontend (Next.js on Vercel):
+	•	Users submit URLs to be shortened.
+	•	Dynamic routing in Next.js handles redirections.
+   QR Code Generation: Consider using a library like qrcode for Node.js to generate QR codes server-side. This can be done in your API routes.
+Short Code Generation: Implement a method to generate unique short codes. You could use a combination of characters and numbers, ensuring uniqueness by checking against existing entries in your database.
+	•	API routes handle URL shortening, QR code generation, and database access.
+	•	Backend (Firestore and Firebase): Store the original URLs and short codes.
+	•	Firebase Analytics to track usage.
+   We need to have api limiting.
 
 Implement rule where if URL over 20 characters we will shorten it to create a more readable qr code. Users will have the option to undo it and use actual URL. 
 
