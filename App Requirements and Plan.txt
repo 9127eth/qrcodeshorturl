@@ -1,0 +1,372 @@
+You are an expert in TypeScript, Node.js, Next.js App Router, React, Firebase, and Tailwind.
+
+This is my first coding project so you will need to be specific on what code needs to go where and change the code for me.
+
+I have the code for a component.jsx, global.cssm, and layout.jsx already. so just tell me where to put the code. 
+
+Code Style and Structure
+
+	•	Write concise, technically sound TypeScript code, with accurate examples where necessary.
+	•	Follow functional and declarative programming patterns; avoid classes and imperative code unless absolutely necessary.
+	•	Prefer modularization and reuse of code over duplication, making the app more maintainable.
+	•	Use descriptive variable names with auxiliary verbs like isLoading, hasError, shouldFetch, etc.
+	•	Structure files in an intuitive way:
+	•	Main component
+	•	Subcomponents
+	•	Helper functions or utilities
+	•	Static content (e.g., images, constants)
+	•	Type definitions (interfaces, types).
+
+Naming Conventions
+
+	•	Use lowercase with dashes for directory names (e.g., components/auth-wizard).
+	•	Prefer named exports over default exports for easier refactoring and tree shaking, making components easier to track across the project.
+
+TypeScript Usage
+
+	•	Write TypeScript for all code, leveraging type safety to catch potential errors early.
+	•	Prefer interfaces over types unless union types or more complex compositions are needed (interfaces are better for object shapes and extending).
+	•	Avoid using enums, instead opt for maps or string literal types for better flexibility and performance.
+	•	Always use functional components, strongly typed with TypeScript interfaces for props.
+
+Syntax and Formatting
+
+	•	Use the function keyword for pure functions, particularly for utilities or helper functions.
+	•	Simplify conditionals: Avoid unnecessary curly braces where concise syntax (like inline ternaries or logical operators) can improve readability. However, ensure readability is never sacrificed for brevity.
+	•	Keep JSX declarative and expressive, favoring simplicity and clarity over cleverness.
+
+Performance Optimization
+
+	•	Optimize image handling:
+	•	Use WebP format for improved performance.
+	•	Always include size data (width and height) in image elements to prevent layout shifts (especially important for mobile performance).
+	•	Implement lazy loading for images and other heavy content, using either native lazy loading (loading="lazy") or React libraries such as react-lazyload or IntersectionObserver.
+Performance OptimizationImplement caching strategies for frequently accessed data
+Optimize database queries for faster retrieval
+Consider using a CDN for static assets
+
+Logging rules:
+Here is my rule of thumb: "Log what you'd need to debug the issue if you were woken up at 3 AM, but not more."
+Use best practices when making logs, high signal low noise, should provide value without being overly verbose.
+
+This guideline encourages thoughtful logging practices. 
+Log critical errors: Always log errors that could crash the application or severely impact functionality.
+Log unexpected behaviors: If something happens that shouldn't, it's worth logging.
+Avoid logging normal operations: Don't log routine, or expected behaviors.
+Use log levels: Implement DEBUG, INFO, WARN, ERROR levels to categorize logs.
+Be selective: Log the most relevant information that would help diagnose issues quickly.
+Consider the context: Include enough contextual data to understand the error's circumstances.
+Think about actionability: If you can't act on the information, it might not need to be logged.
+Review and refine: Periodically review logs to see if they're providing value or just noise.
+
+## Core Technologies
+- Frontend: next.js React and React Native for mobile
+- Backend: firebase
+- Authentication: firebase (post mvp)
+- Storage: Firebase backend/storage (post MVP)
+- Key Management: env variables for app keys and sercrets
+- Payment Processing: Stripe (post mvp)
+- Deployment: GitHub and Vercel
+
+
+UI
+Must have a dark mode option. 
+
+
+There must be a way for users to delete their accounts (post MVP)
+There must be a forgot password function implemented. (post MVP)
+Pop ups and confirmations should occur cleanly in the UI. 
+
+# QR Code Generator and URL Shortener App Requirements
+
+---
+
+## Project Overview
+
+Develop a web and mobile application that serves as a QR code generator and URL shortener, aiming to compete with services like Bit.ly. The application will have two primary phases:
+
+1. **MVP (Minimum Viable Product):** Basic functionalities to generate QR codes and shorten URLs.
+2. **Post-MVP Enhancements:** User authentication, profiles, storage, advanced features, and potential monetization through paid services.
+
+---
+
+## Core Technologies
+
+- **Frontend:**
+  - **Web:** Next.js, React
+  - **Mobile:** React Native
+
+- **Backend:**
+  - Firebase
+
+- **Authentication:**
+  - Firebase Authentication (Post-MVP)
+
+- **Storage:**
+  - Firebase Storage (Post-MVP)
+
+- **Key Management:**
+  - Environment variables for app keys and secrets
+
+- **Payment Processing:**
+  - Stripe (Post-MVP)
+
+- **Deployment:**
+  - GitHub for version control
+  - Vercel for web deployment
+
+---
+
+## Functional Requirements
+
+### MVP Features
+
+1. **URL Shortening:**
+   - Input long URLs and generate shortened versions.
+   - Provide a unique, short URL identifier. For now, let's say the domain will be hlix.co (I may change this later)
+
+2. **QR Code Generation:**
+   - Generate QR codes corresponding to the user input URLs.
+   - Allow users to download or share the QR codes.
+
+3. **User Interface:**
+   - Intuitive and responsive web interface.
+   - Mobile-friendly design for accessibility on various devices.
+
+
+
+Implement rule where if URL over 20 characters we will shorten it to create a more readable qr code. Users will have the option to undo it and use actual URL. 
+
+### Post-MVP Features
+
+5. **Link Management:**
+   - View a list of created short URLs and QR codes.
+   - Option to delete or regenerate short links and QR codes.
+
+
+3. **Basic Analytics:**
+   - Track the number of clicks/views for each shortened URL and QR code.
+
+
+1. **User Authentication & Profiles:**
+   - User registration and login using Firebase Authentication.
+   - User profiles to manage their URLs and QR codes.
+
+2. **Advanced Storage:**
+   - Store user data, including link history and analytics, using Firebase Storage.
+
+3. **Enhanced Analytics:**
+   - Detailed metrics such as geographic data, device types, and referral sources.
+
+4. **Customization Options:**
+   - Customizable QR code designs (colors, logos).
+   - Ability to edit short URLs after creation.
+
+5. **Payment Integration:**
+   - Implement Stripe for subscription-based or pay-per-use services.
+   - Manage billing and invoices for premium features.
+
+6. **Dashboard:**
+   - Comprehensive dashboard for users to manage their links, view analytics, and handle account settings.
+
+7. **API Access:**
+   - Provide API endpoints for users to integrate URL shortening and QR code generation into their own applications.
+
+8. **Security Enhancements:**
+   - Implement features like link expiration, password-protected links, and spam prevention.
+
+9. **Support & Feedback:**
+   - In-app support system and feedback mechanisms for users.
+
+10. **Notifications:**
+    - Email or in-app notifications for account activities, billing, and important updates.
+
+---
+
+## Technical Specifications
+
+### Frontend
+
+- **Web Application:**
+  - **Framework:** Next.js with React
+  - **Routing:** Utilize Next.js routing for navigation between pages.
+  - **State Management:** Use React Context or Redux for managing application state.
+  - **Styling:** CSS-in-JS (e.g., styled-components) or CSS frameworks like Tailwind CSS.
+
+- **Mobile Application:**
+  - **Framework:** React Native
+  - **Navigation:** React Navigation for handling screen transitions.
+  - **UI Components:** Reusable components for consistency across platforms.
+
+### Backend
+
+- **Platform:** Firebase
+  - **Database:** Firestore for storing URLs, user data, and analytics.
+  - **Functions:** Firebase Cloud Functions for handling backend logic like URL shortening, QR code generation, and analytics tracking.
+  - **Real-time Updates:** Utilize Firestore's real-time capabilities for instant updates on the frontend.
+
+### Authentication
+
+- **Service:** Firebase Authentication
+  - **Methods:** Email/password, Google, and other OAuth providers.
+  - **Post-MVP Integration:** Secure routes and data access based on user authentication status.
+
+### Storage
+
+- **Service:** Firebase Storage
+  - **Use Cases:** Store user-generated content such as custom QR code images or exported data.
+  - **Access Control:** Secure access to storage based on user permissions.
+
+### Key Management
+
+- **Environment Variables:**
+  - Store all sensitive keys and secrets in environment variables.
+  - Utilize `.env` files for local development and secure storage solutions for production.
+
+### Payment Processing
+
+- **Service:** Stripe
+  - **Integration Points:** Subscription plans, one-time payments, and billing management.
+  - **Security:** Ensure PCI compliance and secure handling of payment data.
+
+### Deployment
+
+- **Version Control:** GitHub
+  - **Repository Structure:** Separate repositories for web and mobile applications if necessary.
+  - **Branching Strategy:** Implement a branching strategy (e.g., Gitflow) for organized development.
+
+- **Web Deployment:** Vercel
+  - **CI/CD:** Set up continuous integration and deployment pipelines with GitHub and Vercel.
+  - **Environment Management:** Configure separate environments for development, staging, and production.
+
+- **Mobile Deployment:**
+  - **Platforms:** App Store (iOS) and Google Play Store (Android)
+  - **CI/CD:** Use services like GitHub Actions or Bitrise for automated builds and deployments.
+
+---
+
+## Non-Functional Requirements
+
+### Performance
+
+- **Load Time:** Pages should load within 2 seconds under standard network conditions.
+- **Scalability:** Design the system to handle a growing number of users and requests without significant performance degradation.
+- **Responsiveness:** Ensure the application is responsive and works seamlessly across various devices and screen sizes.
+
+### Security
+
+- **Data Protection:** Encrypt sensitive data both in transit and at rest.
+- **Authentication Security:** Implement strong password policies and protect against common vulnerabilities like SQL injection, XSS, and CSRF.
+- **Access Control:** Ensure users can only access and manage their own data.
+
+### Scalability
+
+- **Backend:** Utilize Firebase's scalable infrastructure to handle increased traffic and data storage needs.
+- **Frontend:** Optimize code to ensure quick rendering and minimal load on client devices.
+
+### Usability
+
+- **User Experience:** Design an intuitive and user-friendly interface with clear navigation.
+- **Accessibility:** Adhere to accessibility standards (e.g., WCAG) to make the application usable for individuals with disabilities.
+- **Documentation:** Provide clear documentation and tooltips to assist users in understanding features.
+
+---
+
+## API Requirements
+
+1. **URL Shortening API:**
+   - **Endpoint:** `/api/shorten`
+   - **Method:** POST
+   - **Request Body:** `{ "longUrl": "https://example.com" }`
+   - **Response:** `{ "shortUrl": "https://short.ly/abcd" }`
+
+2. **QR Code Generation API:**
+   - **Endpoint:** `/api/qrcode`
+   - **Method:** POST
+   - **Request Body:** `{ "url": "https://short.ly/abcd" }`
+   - **Response:** `{ "qrCodeImage": "base64string" }`
+
+3. **Analytics API (post MVP):** 
+   - **Endpoint:** `/api/analytics/:shortUrl`
+   - **Method:** GET
+   - **Response:** `{ "clicks": 100, "uniqueVisitors": 80, ... }`
+
+4. **User Management APIs (Post-MVP):**
+   - **User Registration, Login, Profile Management**
+
+5. **Payment APIs (Post-MVP):**
+   - **Subscription Management, Payment Processing**
+
+**API Security:**
+- Implement authentication tokens (e.g., JWT) for protected endpoints.
+- Rate limiting to prevent abuse.
+
+---
+
+## User Interface & Design
+
+1. **Landing Page:**
+   - Clear value proposition.
+   - Input field for URL shortening.
+   - Call-to-action buttons for generating QR codes.
+
+2. **Dashboard (Post-MVP):**
+   - Overview of user’s shortened URLs and QR codes.
+   - Analytics summaries.
+   - Navigation to account settings and billing.
+
+3. **URL Management(Post-MVP):**
+   - List view of all shortened URLs with options to edit, delete, and view analytics.
+   - Search and filter capabilities.
+
+4. **QR Code Management (Post MVP):**
+   - Gallery view of generated QR codes.
+   - Options to download, share, or customize QR codes.
+
+5. **Authentication Pages (Post-MVP):**
+   - Sign Up, Login, Password Reset.
+
+6. **Billing Page (Post-MVP):**
+   - Subscription plans.
+   - Payment history and invoice downloads.
+
+7. **Responsive Design:**
+   - Ensure all pages are mobile-friendly and adapt to various screen sizes.
+
+**Design Considerations:**
+- Consistent color scheme and branding.
+- Intuitive navigation and user flow.
+- Accessibility features like proper contrast, keyboard navigation, and screen reader support.
+
+---
+
+## Project Timeline & Milestones
+
+---
+
+## Additional Considerations
+
+1. **Scalability:**
+   - Design the architecture to accommodate future growth in users and data.
+   - Optimize database queries and backend functions for efficiency.
+make sure URLs are unique and never create duplicates. 
+
+2. **Localization:**
+   - Plan for supporting multiple languages to reach a broader audience.
+
+3. **Compliance:**
+   - Ensure the application complies with relevant data protection regulations (e.g., GDPR, CCPA).
+
+4. **Backup & Recovery:**
+   - Implement data backup strategies to prevent data loss.
+   - Plan for disaster recovery in case of system failures.
+
+5. **Monitoring & Analytics:**
+   - Use tools like Google Analytics and Firebase Analytics to monitor user behavior and application performance.
+
+6. **Documentation:**
+   - Provide comprehensive documentation for developers, including API documentation, setup guides, and contribution guidelines.
+
+7. **Support & Maintenance:**
+   - Establish a system for handling user support requests and technical issues.
+   - Schedule regular maintenance updates to keep the application secure and up-to-date.
