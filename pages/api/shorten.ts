@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '../../lib/firebaseAdmin';
+import applyRateLimit from '../../lib/rateLimit';
 
 const generateShortCode = async (): Promise<string> => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -24,6 +25,12 @@ const generateShortCode = async (): Promise<string> => {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    await applyRateLimit(req, res);
+  } catch (error) {
+    return res.status(429).json({ error: 'Too Many Requests' });
+  }
+
   if (req.method === 'POST') {
     const { longUrl } = req.body;
 
@@ -34,7 +41,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const shortCode = await generateShortCode();
     console.log(`Generated short code: ${shortCode}`);
 
-    // Store the longUrl with shortCode as the document ID
     await db.collection('urls').doc(shortCode).set({ longUrl });
     console.log(`Stored URL mapping: ${shortCode} -> ${longUrl}`);
 
