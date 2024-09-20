@@ -19,9 +19,12 @@ export default function QRCodeGenerator() {
   const [url, setUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [qrCode, setQrCode] = useState('');
+  const [qrCodeTransparent, setQrCodeTransparent] = useState('');
   const [fileType, setFileType] = useState('png');
+  const [isTransparent, setIsTransparent] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [svgQrCode, setSvgQrCode] = useState('');
+  const [svgQrCodeTransparent, setSvgQrCodeTransparent] = useState('');
 
   const handleGenerateQRCode = async () => {
     const validationError = validateUrl(url);
@@ -40,7 +43,9 @@ export default function QRCodeGenerator() {
 
       const data = await response.json();
       setQrCode(data.qrCodeImage);
+      setQrCodeTransparent(data.qrCodeImageTransparent);
       setSvgQrCode(data.svgQrCode);
+      setSvgQrCodeTransparent(data.svgQrCodeTransparent);
     } catch (error) {
       console.error('Failed to generate QR code:', error);
     }
@@ -71,12 +76,13 @@ export default function QRCodeGenerator() {
   const handleDownload = () => {
     const link = document.createElement('a');
     if (fileType === 'svg') {
-      const blob = new Blob([svgQrCode], { type: 'image/svg+xml' });
+      const svgContent = isTransparent ? svgQrCodeTransparent : svgQrCode;
+      const blob = new Blob([svgContent], { type: 'image/svg+xml' });
       link.href = URL.createObjectURL(blob);
     } else {
-      link.href = qrCode;
+      link.href = isTransparent ? qrCodeTransparent : qrCode;
     }
-    link.download = `qrcode.${fileType}`;
+    link.download = `qrcode${isTransparent ? '_transparent' : ''}.${fileType}`;
     link.click();
   };
 
@@ -116,18 +122,27 @@ export default function QRCodeGenerator() {
           {qrCode && (
             <div className="mb-4 w-full flex flex-col sm:flex-row items-center justify-center">
               <div className="bg-gray-100 p-4 rounded-md">
-                <Image src={qrCode} alt="QR Code" width={192} height={192} />
+                <Image src={isTransparent ? qrCodeTransparent : qrCode} alt="QR Code" width={192} height={192} />
               </div>
               <div className="flex flex-col items-center mt-4 sm:mt-0 sm:ml-4">
                 <select
                   value={fileType}
                   onChange={(e) => setFileType(e.target.value)}
-                  className="mb-2 p-1 border rounded-md text-sm w-24"
+                  className="mb-4 p-1 border rounded-md text-sm w-24" // Changed mb-2 to mb-4
                 >
                   <option value="png">png</option>
                   <option value="jpeg">jpeg</option>
                   <option value="svg">svg</option>
                 </select>
+                <label className="flex items-center mb-4 text-sm"> {/* Changed mb-2 to mb-4 */}
+                  <input
+                    type="checkbox"
+                    checked={isTransparent}
+                    onChange={(e) => setIsTransparent(e.target.checked)}
+                    className="mr-2"
+                  />
+                  no background
+                </label>
                 <Button
                   variant="outline"
                   className="text-sm font-semibold"

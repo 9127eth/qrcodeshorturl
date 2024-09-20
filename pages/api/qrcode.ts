@@ -18,8 +18,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
+      // Generate PNG QR codes
       const qrCodeImage = await QRCode.toDataURL(url, { errorCorrectionLevel: 'H', scale: 20 });
+      const qrCodeImageTransparent = await QRCode.toDataURL(url, { 
+        errorCorrectionLevel: 'H', 
+        scale: 20,
+        color: { 
+          dark: '#000000',
+          light: '#00000000'  // Transparent background
+        }
+      });
       
+      // Generate SVG QR codes
       const qrCodeSvg = new QRCodeSVG({
         content: url,
         width: 256,
@@ -30,7 +40,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
       const svgQrCode = qrCodeSvg.svg();
 
-      res.status(200).json({ qrCodeImage, svgQrCode });
+      const qrCodeSvgTransparent = new QRCodeSVG({
+        content: url,
+        width: 256,
+        height: 256,
+        color: "#000000",
+        background: "transparent",
+        ecl: "H"
+      });
+      const svgQrCodeTransparent = qrCodeSvgTransparent.svg();
+
+      res.status(200).json({ 
+        qrCodeImage, 
+        qrCodeImageTransparent, 
+        svgQrCode, 
+        svgQrCodeTransparent 
+      });
     } catch {
       res.status(500).json({ error: 'Failed to generate QR code' });
     }
