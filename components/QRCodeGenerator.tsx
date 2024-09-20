@@ -96,6 +96,14 @@ export default function QRCodeGenerator() {
     }
   };
 
+  const handleEnterPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      await handleGenerateQRCode();
+      await handleShortenUrl();
+    }
+  };
+
   return (
     <div className="w-full max-w-md mx-auto p-4 sm:p-0">
       <div className="space-y-2 mb-6">
@@ -105,6 +113,7 @@ export default function QRCodeGenerator() {
           placeholder="https://example.com"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
+          onKeyDown={handleEnterPress}
           validateUrl={validateUrl} // Pass the validateUrl function here
           className="text-base"
         />
