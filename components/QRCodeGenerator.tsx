@@ -4,6 +4,15 @@ import React, { useState } from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import validator from 'validator';
+
+const validateUrl = (value: string): string | null => {
+  if (validator.isURL(value, { require_protocol: false })) {
+    return null;
+  } else {
+    return "This doesn't look like a valid URL";
+  }
+};
 
 export default function QRCodeGenerator() {
   const [url, setUrl] = useState('');
@@ -12,6 +21,11 @@ export default function QRCodeGenerator() {
   const [fileType, setFileType] = useState('png');
 
   const handleGenerateQRCode = async () => {
+    const validationError = validateUrl(url);
+    if (validationError && !window.confirm(`${validationError}. Are you sure you want to continue?`)) {
+      return;
+    }
+
     try {
       const response = await fetch('/api/qrcode', {
         method: 'POST',
@@ -29,6 +43,11 @@ export default function QRCodeGenerator() {
   };
 
   const handleShortenUrl = async () => {
+    const validationError = validateUrl(url);
+    if (validationError && !window.confirm(`${validationError}. Are you sure you want to continue?`)) {
+      return;
+    }
+
     try {
       const response = await fetch('/api/shorten', {
         method: 'POST',
@@ -61,6 +80,7 @@ export default function QRCodeGenerator() {
           placeholder="https://example.com"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
+          validateUrl={validateUrl} // Pass the validateUrl function here
           className="text-base"
         />
       </div>
