@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '../../lib/firebaseAdmin';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 const generateShortCode = async (): Promise<string> => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
