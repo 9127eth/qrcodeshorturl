@@ -27,7 +27,7 @@ const generateShortCode = async (): Promise<string> => {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     await applyRateLimit(req, res);
-  } catch (error) {
+  } catch {
     return res.status(429).json({ error: 'Too Many Requests' });
   }
 

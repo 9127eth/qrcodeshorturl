@@ -11,7 +11,7 @@ const limiter = rateLimit({
 // Create a wrapper function to make it compatible with Next.js API routes
 export default function applyRateLimit(req: NextApiRequest, res: NextApiResponse) {
   return new Promise((resolve, reject) => {
-    // @ts-ignore
+    // @ts-expect-error: LRUCache types are not fully compatible
     limiter(req, res, (result) => {
       if (result instanceof Error) {
         return reject(result);
