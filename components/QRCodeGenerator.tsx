@@ -20,6 +20,7 @@ export default function QRCodeGenerator() {
   const [shortUrl, setShortUrl] = useState('');
   const [qrCode, setQrCode] = useState('');
   const [fileType, setFileType] = useState('png');
+  const [copySuccess, setCopySuccess] = useState(false);
 
   const handleGenerateQRCode = async () => {
     const validationError = validateUrl(url);
@@ -70,6 +71,16 @@ export default function QRCodeGenerator() {
     link.href = qrCode;
     link.download = `qrcode.${fileType}`;
     link.click();
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(shortUrl);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
   };
 
   return (
@@ -124,7 +135,13 @@ export default function QRCodeGenerator() {
               <h2 className="text-lg font-semibold mb-2">Shortened URL:</h2>
               <div className="flex items-center space-x-2">
                 <Input value={shortUrl} readOnly className="text-base" />
-                <Button onClick={() => navigator.clipboard.writeText(shortUrl)} className="text-sm font-semibold">Copy</Button>
+                <Button 
+                  onClick={handleCopy} 
+                  className="text-sm font-semibold"
+                  disabled={copySuccess}
+                >
+                  {copySuccess ? 'Copied!' : 'Copy'}
+                </Button>
               </div>
             </div>
           )}
