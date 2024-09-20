@@ -26,7 +26,7 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
     <html lang="en" suppressHydrationWarning>
       <body 
         className={cn(
-          'antialiased',
+          'antialiased min-h-screen flex flex-col',
           fontHeading.variable,
           fontBody.variable
         )}
@@ -35,7 +35,15 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
           <div className="flex justify-end p-4">
             <ThemeToggle />
           </div>
-          {children}
+          <main className="flex-grow">
+            {children}
+          </main>
+          <footer className="mt-auto py-4 text-center">
+            <div className="flex justify-center space-x-4">
+              <a href="/privacy-policy" className="text-sm text-muted-foreground hover:underline">Privacy Policy</a>
+              <a href="/terms-of-service" className="text-sm text-muted-foreground hover:underline">Terms of Service</a>
+            </div>
+          </footer>
         </ThemeProvider>
       </body>
     </html>

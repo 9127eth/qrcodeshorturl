@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import QRCode from 'qrcode';
+import QRCodeSVG from 'qrcode-svg';
 import applyRateLimit from '../../lib/rateLimit';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -18,7 +19,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       const qrCodeImage = await QRCode.toDataURL(url, { errorCorrectionLevel: 'H', scale: 20 });
-      res.status(200).json({ qrCodeImage });
+      
+      const qrCodeSvg = new QRCodeSVG({
+        content: url,
+        width: 256,
+        height: 256,
+        color: "#000000",
+        background: "#ffffff",
+        ecl: "H"
+      });
+      const svgQrCode = qrCodeSvg.svg();
+
+      res.status(200).json({ qrCodeImage, svgQrCode });
     } catch {
       res.status(500).json({ error: 'Failed to generate QR code' });
     }

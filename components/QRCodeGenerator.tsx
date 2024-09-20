@@ -21,6 +21,7 @@ export default function QRCodeGenerator() {
   const [qrCode, setQrCode] = useState('');
   const [fileType, setFileType] = useState('png');
   const [copySuccess, setCopySuccess] = useState(false);
+  const [svgQrCode, setSvgQrCode] = useState('');
 
   const handleGenerateQRCode = async () => {
     const validationError = validateUrl(url);
@@ -39,6 +40,7 @@ export default function QRCodeGenerator() {
 
       const data = await response.json();
       setQrCode(data.qrCodeImage);
+      setSvgQrCode(data.svgQrCode);
     } catch (error) {
       console.error('Failed to generate QR code:', error);
     }
@@ -68,7 +70,12 @@ export default function QRCodeGenerator() {
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = qrCode;
+    if (fileType === 'svg') {
+      const blob = new Blob([svgQrCode], { type: 'image/svg+xml' });
+      link.href = URL.createObjectURL(blob);
+    } else {
+      link.href = qrCode;
+    }
     link.download = `qrcode.${fileType}`;
     link.click();
   };
@@ -98,10 +105,10 @@ export default function QRCodeGenerator() {
       </div>
       <div className="flex space-x-2 mb-6">
         <Button onClick={handleGenerateQRCode} className="flex-1 text-base font-semibold">
-          Generate QR Code
+          Get QR Code
         </Button>
         <Button onClick={handleShortenUrl} variant="outline" className="flex-1 text-base font-semibold">
-          Shorten URL
+          Get Short URL
         </Button>
       </div>
       {(qrCode || shortUrl) && (
@@ -117,8 +124,9 @@ export default function QRCodeGenerator() {
                   onChange={(e) => setFileType(e.target.value)}
                   className="mb-2 p-1 border rounded-md text-sm w-24"
                 >
-                  <option value="png">PNG</option>
-                  <option value="jpeg">JPEG</option>
+                  <option value="png">png</option>
+                  <option value="jpeg">jpeg</option>
+                  <option value="svg">svg</option>
                 </select>
                 <Button
                   variant="outline"
