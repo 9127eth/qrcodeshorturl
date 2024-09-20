@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-      const qrCodeImage = await QRCode.toDataURL(url);
+      const qrCodeImage = await QRCode.toDataURL(url, { errorCorrectionLevel: 'H', scale: 20 });
       res.status(200).json({ qrCodeImage });
     } catch {
       res.status(500).json({ error: 'Failed to generate QR code' });

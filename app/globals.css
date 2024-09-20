@@ -39,4 +39,14 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
   }
+
+  .p-4 {
+    padding: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .p-4 {
+      padding: 0;
+    }
+  }
 }

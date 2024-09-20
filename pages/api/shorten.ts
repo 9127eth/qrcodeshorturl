@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const shortCode = await generateShortCode();
     await addDoc(collection(db, 'urls'), { longUrl, shortCode });
 
-    res.status(200).json({ shortUrl: `https://qrsu.co/${shortCode}` });
+    res.status(200).json({ shortUrl: `https://qrs.co/${shortCode}` });
   } else {
     res.status(405).json({ error: 'Method not allowed' });
   }

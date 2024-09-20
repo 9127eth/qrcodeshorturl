@@ -9,6 +9,7 @@ export default function QRCodeGenerator() {
   const [url, setUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [qrCode, setQrCode] = useState('');
+  const [fileType, setFileType] = useState('png');
 
   const handleGenerateQRCode = async () => {
     try {
@@ -44,8 +45,15 @@ export default function QRCodeGenerator() {
     }
   };
 
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = qrCode;
+    link.download = `qrcode.${fileType}`;
+    link.click();
+  };
+
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto p-4 sm:p-0">
       <div className="space-y-2 mb-6">
         <Label htmlFor="url" className="text-lg font-semibold">Enter a URL</Label>
         <Input
@@ -67,23 +75,27 @@ export default function QRCodeGenerator() {
       {(qrCode || shortUrl) && (
         <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
           {qrCode && (
-            <div className="mb-4 w-full flex items-start">
-              <h2 className="text-lg font-semibold mb-2 mr-4">QR Code:</h2> {/* Added margin-right */}
+            <div className="mb-4 w-full flex flex-col sm:flex-row items-center justify-center">
               <div className="bg-gray-100 p-4 rounded-md">
                 <img src={qrCode} alt="QR Code" className="w-48 h-48 object-contain" />
               </div>
-              <Button
-                variant="outline"
-                className="mt-2 text-base font-semibold"
-                onClick={() => {
-                  const link = document.createElement('a');
-                  link.href = qrCode;
-                  link.download = 'qrcode.png';
-                  link.click();
-                }}
-              >
-                Download
-              </Button>
+              <div className="flex flex-col items-center mt-4 sm:mt-0 sm:ml-4">
+                <select
+                  value={fileType}
+                  onChange={(e) => setFileType(e.target.value)}
+                  className="mb-2 p-1 border rounded-md text-sm w-24"
+                >
+                  <option value="png">PNG</option>
+                  <option value="jpeg">JPEG</option>
+                </select>
+                <Button
+                  variant="outline"
+                  className="text-sm font-semibold"
+                  onClick={handleDownload}
+                >
+                  Download
+                </Button>
+              </div>
             </div>
           )}
           {shortUrl && (
@@ -91,7 +103,7 @@ export default function QRCodeGenerator() {
               <h2 className="text-lg font-semibold mb-2">Shortened URL:</h2>
               <div className="flex items-center space-x-2">
                 <Input value={shortUrl} readOnly className="text-base" />
-                <Button onClick={() => navigator.clipboard.writeText(shortUrl)} className="text-base font-semibold">Copy</Button>
+                <Button onClick={() => navigator.clipboard.writeText(shortUrl)} className="text-sm font-semibold">Copy</Button>
               </div>
             </div>
           )}
