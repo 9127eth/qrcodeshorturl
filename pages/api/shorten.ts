@@ -1,19 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '../../lib/firebaseConfig';
-import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../../lib/firebaseAdmin';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 const generateShortCode = async (): Promise<string> => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let shortCode = '';
-  for (let i = 0; i < 5; i++) {
-    shortCode += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
 
-  // Ensure the short code is unique
-  const q = query(collection(db, 'urls'), where('shortCode', '==', shortCode));
-  const querySnapshot = await getDocs(q);
-  if (!querySnapshot.empty) {
-    return generateShortCode();
+  while (true) {
+    // Generate a 5-character random string
+    shortCode = Array.from({ length: 5 }, () =>
+      characters.charAt(Math.floor(Math.random() * characters.length))
+    ).join('');
+
+    // Check if the shortCode already exists
+    const docRef = db.collection('urls').doc(shortCode);
+    const docSnap = await docRef.get();
+
+    if (!docSnap.exists) {
+      break; // Unique shortCode found
+    }
   }
 
   return shortCode;
@@ -28,9 +33,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const shortCode = await generateShortCode();
-    await addDoc(collection(db, 'urls'), { longUrl, shortCode });
+    console.log(`Generated short code: ${shortCode}`);
 
-    res.status(200).json({ shortUrl: `https://qrs.co/${shortCode}` });
+    // Store the longUrl with shortCode as the document ID
+    await db.collection('urls').doc(shortCode).set({ longUrl });
+    console.log(`Stored URL mapping: ${shortCode} -> ${longUrl}`);
+
+    const shortUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${shortCode}`;
+    console.log(`Created short URL: ${shortUrl}`);
+
+    res.status(200).json({ shortUrl });
   } else {
     res.status(405).json({ error: 'Method not allowed' });
   }

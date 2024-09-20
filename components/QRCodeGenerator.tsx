@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import validator from 'validator';
+import Image from 'next/image';
 
 const validateUrl = (value: string): string | null => {
   if (validator.isURL(value, { require_protocol: false })) {
@@ -97,7 +98,7 @@ export default function QRCodeGenerator() {
           {qrCode && (
             <div className="mb-4 w-full flex flex-col sm:flex-row items-center justify-center">
               <div className="bg-gray-100 p-4 rounded-md">
-                <img src={qrCode} alt="QR Code" className="w-48 h-48 object-contain" />
+                <Image src={qrCode} alt="QR Code" width={192} height={192} />
               </div>
               <div className="flex flex-col items-center mt-4 sm:mt-0 sm:ml-4">
                 <select
