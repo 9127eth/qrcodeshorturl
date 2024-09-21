@@ -25,6 +25,7 @@ export default function QRCodeGenerator() {
   const [copySuccess, setCopySuccess] = useState(false);
   const [svgQrCode, setSvgQrCode] = useState('');
   const [svgQrCodeTransparent, setSvgQrCodeTransparent] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleGenerateQRCode = async () => {
     const validationError = validateUrl(url);
@@ -52,6 +53,7 @@ export default function QRCodeGenerator() {
   };
 
   const handleShortenUrl = async () => {
+    setErrorMessage(''); // Reset error message
     const validationError = validateUrl(url);
     if (validationError && !window.confirm(`${validationError}. Are you sure you want to continue?`)) {
       return;
@@ -67,9 +69,16 @@ export default function QRCodeGenerator() {
       });
 
       const data = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(data.error || 'An error occurred.');
+        return;
+      }
+
       setShortUrl(data.shortUrl);
     } catch (error) {
       console.error('Failed to shorten URL:', error);
+      setErrorMessage('An error occurred while shortening the URL.');
     }
   };
 
@@ -126,6 +135,11 @@ export default function QRCodeGenerator() {
           Get Short URL
         </Button>
       </div>
+      {errorMessage && (
+        <div className="text-red-500 text-sm mt-2">
+          {errorMessage}
+        </div>
+      )}
       {(qrCode || shortUrl) && (
         <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
           {qrCode && (
