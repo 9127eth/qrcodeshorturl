@@ -199,6 +199,21 @@ export default function QRCodeGenerator() {
           )}
         </div>
       )}
+      {(qrCode || shortUrl) && (
+        <div className="mt-4 text-center">
+          <span 
+            className="text-sm text-primary cursor-pointer hover:underline"
+            onClick={() => {
+              setQrCode('');
+              setShortUrl('');
+              setUrl('');
+              setErrorMessage('');
+            }}
+          >
+            Clear
+          </span>
+        </div>
+      )}
     </div>
   );
 }
