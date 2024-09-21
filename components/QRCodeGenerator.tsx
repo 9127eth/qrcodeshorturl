@@ -34,13 +34,14 @@ export default function QRCodeGenerator() {
   const [svgQrCodeTransparent, setSvgQrCodeTransparent] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleGenerateQRCode = async () => {
+  const handleGenerateQRCode = async (urlToGenerate?: string) => {
     setErrorMessage('');
-    if (!url.trim()) {
+    const targetUrl = urlToGenerate || url;
+    if (!targetUrl.trim()) {
       setErrorMessage('Please add a valid URL');
       return;
     }
-    const validationError = validateUrl(url);
+    const validationError = validateUrl(targetUrl);
     if (validationError && !window.confirm(`${validationError}. Are you sure you want to continue?`)) {
       return;
     }
@@ -50,7 +51,7 @@ export default function QRCodeGenerator() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url: targetUrl }),
       });
 
       const data = await response.json();
@@ -150,10 +151,10 @@ export default function QRCodeGenerator() {
         />
       </div>
       <div className="flex space-x-2 mb-6">
-        <Button onClick={handleGenerateQRCode} className="flex-1 text-base font-semibold">
+        <Button onClick={() => handleGenerateQRCode()} className="flex-1 text-base font-semibold">
           Get QR Code
         </Button>
-        <Button onClick={handleShortenUrl} variant="outline" className="flex-1 text-base font-semibold">
+        <Button onClick={() => handleShortenUrl()} variant="outline" className="flex-1 text-base font-semibold">
           Get Short URL
         </Button>
       </div>
@@ -214,7 +215,7 @@ export default function QRCodeGenerator() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
-                        onClick={handleGenerateQRCode}
+                        onClick={() => handleGenerateQRCode(shortUrl)}
                         variant="outline"
                         className="bg-white p-2 h-10 w-10 flex items-center justify-center"
                       >
