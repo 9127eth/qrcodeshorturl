@@ -33,7 +33,6 @@ We should add a new field to the url document to store the web risk api response
 4. Error Handling and Logging
 4.1 API Errors:
 
-Implement retries (max 3) with exponential backoff for transient errors (e.g., network issues).
 Log errors for monitoring and debugging purposes.
 4.2 User Feedback:
 
@@ -46,12 +45,9 @@ Consider caching results of URL checks to reduce API calls for frequently submit
 6.1 Secure Storage of Credentials:
 
 Store API keys or service account credentials securely, using environment variables.
-6.2 Input Validation:
 
-Sanitize and validate URLs before processing to prevent injection attacks.
+
 6.3 HTTPS Enforcement:
-
 Ensure all network communications with the Web Risk API are over HTTPS.
-
 
 Scalability: Design the implementation to be scalable in case of increased load.
