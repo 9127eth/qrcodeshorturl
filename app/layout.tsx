@@ -4,6 +4,8 @@ import './globals.css';
 import { ReactNode } from 'react';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import Image from 'next/image';
+import Head from 'next/head';
 
 // Add this metadata export
 export const metadata = {
@@ -47,6 +49,9 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps): JSX.Element {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <body 
         className={cn(
           'antialiased min-h-screen flex flex-col',
@@ -55,7 +60,12 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="flex justify-end p-4">
+          <div className="flex justify-between items-center p-4">
+            <div className="flex items-center pt-4 pl-4">
+              <div className="dark:bg-white dark:p-2 dark:rounded">
+                <Image src="/logo.png" alt="qrsu.io logo" width={112} height={37} />
+              </div>
+            </div>
             <ThemeToggle />
           </div>
           <main className="flex-grow">
