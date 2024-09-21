@@ -11,7 +11,7 @@ export default function PrivacyPolicy() {
       <p className="text-sm mb-4">Last updated: 9/20/2024</p>
       <div className="text-sm space-y-4">
         <p>
-          This Privacy Policy describes how qrsu.io ("we," "our," or "us") collects, uses, and shares information in connection with your use of our URL shortening and QR code generation service (the "Service").
+          This Privacy Policy describes how qrsu.io (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) collects, uses, and shares information in connection with your use of our URL shortening and QR code generation service (the &quot;Service&quot;).
         </p>
 
         <h2 className="text-lg font-semibold mt-4 mb-2">1. Information We Collect</h2>
@@ -48,13 +48,13 @@ export default function PrivacyPolicy() {
         <p>5.1. We implement reasonable security measures to protect the information we collect. However, no method of transmission over the Internet or electronic storage is 100% secure, and we cannot guarantee absolute security.</p>
 
         <h2 className="text-lg font-semibold mt-4 mb-2">6. Your Rights</h2>
-        <p>6.1. You may request the deletion of a shortened URL or QR code you've created by contacting us on Twitter @qrsu_io.</p>
+        <p>6.1. You may request the deletion of a shortened URL or QR code you&apos;ve created by contacting us on Twitter @qrsu_io.</p>
 
-        <h2 className="text-lg font-semibold mt-4 mb-2">7. Children's Privacy</h2>
+        <h2 className="text-lg font-semibold mt-4 mb-2">7. Children&apos;s Privacy</h2>
         <p>7.1. Our Service is not directed to children under the age of 13, and we do not knowingly collect personal information from children under 13.</p>
 
         <h2 className="text-lg font-semibold mt-4 mb-2">8. Changes to This Privacy Policy</h2>
-        <p>8.1. We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.</p>
+        <p>8.1. We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date.</p>
 
         <h2 className="text-lg font-semibold mt-4 mb-2">9. Contact Us</h2>
         <p>

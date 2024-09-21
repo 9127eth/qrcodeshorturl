@@ -11,7 +11,7 @@ export default function TermsOfService() {
       <p className="text-sm mb-4">Last updated: 9/20/2024</p>
       <div className="text-sm space-y-4">
         <p>
-          Welcome to qrsu.io ("we," "our," or "us"). By accessing or using our URL shortening and QR code generation service (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our Service.
+          Welcome to qrsu.io (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). By accessing or using our URL shortening and QR code generation service (the &quot;Service&quot;), you agree to be bound by these Terms of Service (&quot;Terms&quot;). If you do not agree to these Terms, please do not use our Service.
         </p>
 
         <h2 className="text-lg font-semibold mt-4 mb-2">1. Use of the Service</h2>
@@ -34,7 +34,7 @@ export default function TermsOfService() {
         <p>3.1. Our Service, including its original content, features, and functionality, is owned by [Your Company Name] and is protected by international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.</p>
 
         <h2 className="text-lg font-semibold mt-4 mb-2">4. Disclaimer of Warranties</h2>
-        <p>4.1. Your use of our Service is at your sole risk. The Service is provided on an "AS IS" and "AS AVAILABLE" basis, without warranties of any kind, either express or implied.</p>
+        <p>4.1. Your use of our Service is at your sole risk. The Service is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis, without warranties of any kind, either express or implied.</p>
         <p>4.2. We do not guarantee that our Service will be uninterrupted, timely, secure, or error-free.</p>
 
         <h2 className="text-lg font-semibold mt-4 mb-2">5. Limitation of Liability</h2>

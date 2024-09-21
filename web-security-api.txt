@@ -1,0 +1,57 @@
+Below are the requirements for the web security api. I am new to coding so help me implement this step by step.
+
+Requirements
+1. Google Cloud Setup
+1.1 Enable Web Risk API:
+
+we will use the api key a091c0e301830a26c98e7ffba9511db704b60002
+
+2. Application Changes
+2.1 URL Submission Workflow:
+
+Modify the URL submission process to include a security check step before storing the URL and generating a QR code.
+2.2 Integration with Web Risk API:
+
+Use the Web Risk API Lookup Method to check URLs.
+Endpoint: https://webrisk.googleapis.com/v1/uris:search
+2.3 API Request Details:
+
+HTTP Method: GET
+Parameters:
+uri: The URL to be checked (encoded).
+threatTypes: The types of threats to check for (e.g., MALWARE, SOCIAL_ENGINEERING, UNWANTED_SOFTWARE).
+key: Your API key (if using API Key authentication).
+2.4 Handling API Responses:
+
+Safe URL: If the URL is not found in any threat lists, proceed to store it in Firestore and generate the QR code.
+Threat Detected: If the URL is identified as a threat:
+Do not store the URL or generate a QR code.
+Display an error message to the user explaining that the URL is unsafe.
+3. Firestore Data Model
+3.1 URL Document Structure:
+We should add a new field to the url document to store the web risk api response a url is deemed safe, this could be for auditing purposes later..
+4. Error Handling and Logging
+4.1 API Errors:
+
+Implement retries (max 3) with exponential backoff for transient errors (e.g., network issues).
+Log errors for monitoring and debugging purposes.
+4.2 User Feedback:
+
+Provide clear and user-friendly messages in case of failures or when a URL is unsafe.
+5. Performance Optimization
+5.1 Caching
+
+Consider caching results of URL checks to reduce API calls for frequently submitted URLs.
+6. Security Considerations
+6.1 Secure Storage of Credentials:
+
+Store API keys or service account credentials securely, using environment variables.
+6.2 Input Validation:
+
+Sanitize and validate URLs before processing to prevent injection attacks.
+6.3 HTTPS Enforcement:
+
+Ensure all network communications with the Web Risk API are over HTTPS.
+
+
+Scalability: Design the implementation to be scalable in case of increased load.
