@@ -35,21 +35,25 @@ const checkUrlSafety = async (url: string): Promise<boolean> => {
   const threatTypes = ['MALWARE', 'SOCIAL_ENGINEERING', 'UNWANTED_SOFTWARE'];
   const apiKey = process.env.WEBRISK_API_KEY;
 
-  const endpoint = `https://webrisk.googleapis.com/v1/uris:search?key=${apiKey}`;
+  if (!apiKey) {
+    console.error('WEBRISK_API_KEY is not set in the environment variables.');
+    return true; // Assume safe if API key is missing to avoid blocking legitimate requests
+  }
+
+  const params = new URLSearchParams({
+    key: apiKey,
+    uri: url,
+  });
+
+  threatTypes.forEach((type) => params.append('threatTypes', type));
+
+  const endpoint = `https://webrisk.googleapis.com/v1/uris:search?${params.toString()}`;
 
   try {
     console.log('Sending request to Web Risk API:', endpoint);
-    console.log('Request body:', JSON.stringify({ uri: url, threatTypes }));
 
     const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        uri: url,
-        threatTypes: threatTypes,
-      }),
+      method: 'GET',
     });
 
     console.log('Response status:', response.status);
@@ -61,22 +65,17 @@ const checkUrlSafety = async (url: string): Promise<boolean> => {
     if (!response.ok) {
       console.error(`Web Risk API error: ${response.status} ${response.statusText}`);
       console.error('Error details:', responseText);
-      
+
       if (response.status === 400 || response.status === 403) {
         console.warn('Bypassing Web Risk API check due to API error');
         return true;
       }
-      
+
       return false;
     }
 
-    try {
-      const data = JSON.parse(responseText) as WebRiskResponse;
-      return !data.threat;
-    } catch (parseError) {
-      console.error('Error parsing JSON response:', parseError);
-      return true; // Assume safe if we can't parse the response
-    }
+    const data = JSON.parse(responseText) as WebRiskResponse;
+    return !data.threat;
   } catch (error) {
     console.error('Error checking URL safety:', error);
     return true; // Assume safe on error to avoid blocking legitimate requests
