@@ -6,6 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import validator from 'validator';
 import Image from 'next/image';
+import { QrCode } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const validateUrl = (value: string): string | null => {
   if (validator.isURL(value, { require_protocol: false })) {
@@ -194,6 +201,22 @@ export default function QRCodeGenerator() {
                 >
                   {copySuccess ? 'Copied!' : 'Copy'}
                 </Button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={handleGenerateQRCode}
+                        variant="outline"
+                        className="bg-white p-2 h-10 w-10 flex items-center justify-center"
+                      >
+                        <QrCode className="h-6 w-6" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Get a QR code for this short URL</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             </div>
           )}
