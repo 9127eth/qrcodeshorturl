@@ -5,6 +5,29 @@ import { ReactNode } from 'react';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
+// Add this metadata export
+export const metadata = {
+  title: 'qrsu.io - QR Code & URL Shortener',
+  description: 'Generate QR codes and shorten URLs quickly and securely.',
+  keywords: ['qrsu.io','qrsu','Free QR Codes', 'Free QR Code Generator', 'Free URL Shortener', 'QR Code Generator', 'Custom QR Codes', 'Dynamic QR Codes', 'QR Code Creator', 'Create QR Codes', 'QR Code Scanner', 'Trackable QR Codes', 'QR Code Marketing', 'QR Code Design', 'Best QR Code Generator', 'Free Short URL', 'Short Codes', 'URL Shortener', 'Custom Short URLs', 'URL Redirection', 'Link Shortener', 'Short URL Service', 'Short Link Creator', 'Free Link Shortener', 'Dynamic URL Shortener', 'QR Codes for Business', 'QR Code API', 'Free Link Generator', 'Trackable URLs', 'Secure URL Shortener', 'Branded QR Codes', 'QR Code Solutions'],
+  openGraph: {
+    title: 'qrsu.io - QR Code & URL Shortener',
+    description: 'Create QR codes and short URLs quickly and securely with qrsu.io.',
+    url: 'https://qrcodeshorturl.com',
+    siteName: 'qrsu.io',
+    images: [
+      {
+        url: '/qrsu.png', // This should match the image you added in the public directory
+        width: 1200,
+        height: 630,
+        alt: 'qrsu.io - QR Code & URL Shortener',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+};
+
 const fontHeading = Inter({
   subsets: ['latin'],
   display: 'swap',
