@@ -37,7 +37,7 @@ const checkUrlSafety = async (url: string): Promise<boolean> => {
 
   if (!apiKey) {
     console.error('WEBRISK_API_KEY is not set in the environment variables.');
-    return true; // Assume safe if API key is missing to avoid blocking legitimate requests
+    return false; // Assume unsafe if API key is missing
   }
 
   const params = new URLSearchParams({
@@ -65,20 +65,21 @@ const checkUrlSafety = async (url: string): Promise<boolean> => {
     if (!response.ok) {
       console.error(`Web Risk API error: ${response.status} ${response.statusText}`);
       console.error('Error details:', responseText);
-
-      if (response.status === 400 || response.status === 403) {
-        console.warn('Bypassing Web Risk API check due to API error');
-        return true;
-      }
-
-      return false;
+      return false; // Assume unsafe on API error
     }
 
     const data = JSON.parse(responseText) as WebRiskResponse;
-    return !data.threat;
+    console.log('Parsed response:', JSON.stringify(data, null, 2));
+
+    if (data.threat) {
+      console.log('Threat detected:', data.threat.threatTypes);
+      return false; // URL is unsafe
+    }
+
+    return true; // URL is safe
   } catch (error) {
     console.error('Error checking URL safety:', error);
-    return true; // Assume safe on error to avoid blocking legitimate requests
+    return false; // Assume unsafe on error
   }
 };
 
