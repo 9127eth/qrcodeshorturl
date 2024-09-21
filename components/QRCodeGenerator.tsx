@@ -32,7 +32,6 @@ export default function QRCodeGenerator() {
     if (validationError && !window.confirm(`${validationError}. Are you sure you want to continue?`)) {
       return;
     }
-
     try {
       const response = await fetch('/api/qrcode', {
         method: 'POST',
@@ -43,17 +42,24 @@ export default function QRCodeGenerator() {
       });
 
       const data = await response.json();
+      
+      if (!response.ok) {
+        setErrorMessage(data.error || 'An error occurred while generating the QR code.');
+        return;
+      }
+
       setQrCode(data.qrCodeImage);
       setQrCodeTransparent(data.qrCodeImageTransparent);
       setSvgQrCode(data.svgQrCode);
       setSvgQrCodeTransparent(data.svgQrCodeTransparent);
     } catch (error) {
       console.error('Failed to generate QR code:', error);
+      setErrorMessage('An error occurred while generating the QR code.');
     }
   };
 
   const handleShortenUrl = async () => {
-    setErrorMessage(''); // Reset error message
+    setErrorMessage('');
     const validationError = validateUrl(url);
     if (validationError && !window.confirm(`${validationError}. Are you sure you want to continue?`)) {
       return;
@@ -70,8 +76,8 @@ export default function QRCodeGenerator() {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        setErrorMessage(data.error || 'An error occurred.');
+      if (!response.ok || data.isSafe === false) {
+        setErrorMessage('The URL provided is unsafe.');
         return;
       }
 

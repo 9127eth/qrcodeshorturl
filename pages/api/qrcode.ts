@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import QRCode from 'qrcode';
 import QRCodeSVG from 'qrcode-svg';
 import applyRateLimit from '../../lib/rateLimit';
+import { checkUrlSafety } from './shorten';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -18,6 +19,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
+      // Check URL safety
+      const isSafe = await checkUrlSafety(url);
+      if (!isSafe) {
+        return res.status(400).json({ error: 'The URL provided is unsafe.' });
+      }
+
       // Generate PNG QR codes
       const qrCodeImage = await QRCode.toDataURL(url, { errorCorrectionLevel: 'H', scale: 20 });
       const qrCodeImageTransparent = await QRCode.toDataURL(url, { 
@@ -56,7 +63,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         svgQrCode, 
         svgQrCodeTransparent 
       });
-    } catch {
+    } catch (error) {
+      console.error('Error generating QR code:', error);
       res.status(500).json({ error: 'Failed to generate QR code' });
     }
   } else {
