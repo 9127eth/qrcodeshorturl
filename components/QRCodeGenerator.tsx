@@ -35,6 +35,11 @@ export default function QRCodeGenerator() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleGenerateQRCode = async () => {
+    setErrorMessage('');
+    if (!url.trim()) {
+      setErrorMessage('Please add a valid URL');
+      return;
+    }
     const validationError = validateUrl(url);
     if (validationError && !window.confirm(`${validationError}. Are you sure you want to continue?`)) {
       return;
@@ -67,6 +72,10 @@ export default function QRCodeGenerator() {
 
   const handleShortenUrl = async () => {
     setErrorMessage('');
+    if (!url.trim()) {
+      setErrorMessage('Please add a valid URL');
+      return;
+    }
     const validationError = validateUrl(url);
     if (validationError && !window.confirm(`${validationError}. Are you sure you want to continue?`)) {
       return;
@@ -191,7 +200,7 @@ export default function QRCodeGenerator() {
           )}
           {shortUrl && (
             <div className="mt-4 w-full">
-              <h2 className="text-lg font-semibold mb-2">Shortened URL:</h2>
+              <h2 className="text-lg font-semibold mb-2">Short URL:</h2>
               <div className="flex items-center space-x-2">
                 <Input value={shortUrl} readOnly className="text-base" />
                 <Button 
