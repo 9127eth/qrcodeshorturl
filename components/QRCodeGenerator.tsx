@@ -13,6 +13,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { AlertTriangle } from "lucide-react"; // Add this import
 
 const validateUrl = (value: string): string | null => {
   if (validator.isURL(value, { require_protocol: false })) {
@@ -159,8 +160,9 @@ export default function QRCodeGenerator() {
         </Button>
       </div>
       {errorMessage && (
-        <div className="text-red-500 text-sm mt-2">
-          {errorMessage}
+        <div className="flex items-center space-x-2 text-red-500 text-sm mt-2">
+          <AlertTriangle className="h-4 w-4" />
+          <span>{errorMessage}</span>
         </div>
       )}
       {(qrCode || shortUrl) && (
