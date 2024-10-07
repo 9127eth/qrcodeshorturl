@@ -37,7 +37,13 @@ export default function QRCodeGenerator() {
 
   const handleGenerateQRCode = async (urlToGenerate?: string) => {
     setErrorMessage('');
-    const targetUrl = urlToGenerate || url;
+    let targetUrl = urlToGenerate || url;
+    
+    // Ensure the URL has a protocol
+    if (!/^https?:\/\//i.test(targetUrl)) {
+      targetUrl = `https://${targetUrl}`;
+    }
+
     if (!targetUrl.trim()) {
       setErrorMessage('Please add a valid URL');
       return;

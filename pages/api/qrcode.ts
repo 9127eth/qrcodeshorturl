@@ -4,6 +4,13 @@ import QRCodeSVG from 'qrcode-svg';
 import applyRateLimit from '../../lib/rateLimit';
 import { checkUrlSafety } from './shorten';
 
+function ensureProtocol(url: string): string {
+  if (!/^https?:\/\//i.test(url)) {
+    return `https://${url}`;
+  }
+  return url;
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     await applyRateLimit(req, res);
@@ -12,11 +19,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === 'POST') {
-    const { url } = req.body;
+    let { url } = req.body;
 
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
     }
+
+    // Ensure the URL has a protocol
+    url = ensureProtocol(url);
 
     try {
       // Check URL safety
