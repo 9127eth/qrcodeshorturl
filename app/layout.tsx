@@ -51,6 +51,7 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
     <html lang="en" suppressHydrationWarning>
       <Head>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="monetag" content="39d47a1ed28275d7ce457700dfba483d"></meta>
       </Head>
       <body 
         className={cn(
