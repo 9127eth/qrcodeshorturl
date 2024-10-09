@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import Image from 'next/image';
 import Head from 'next/head';
+import Script from 'next/script';
 
 // Add this metadata export
 export const metadata = {
@@ -78,7 +79,16 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
             </div>
           </footer>
         </ThemeProvider>
-        <script type="text/javascript"> var infolinks_pid = 3426996; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+        <Script id="infolinks-script" strategy="afterInteractive">
+          {`
+            var infolinks_pid = 3426996;
+            var infolinks_wsid = 0;
+          `}
+        </Script>
+        <Script
+          src="//resources.infolinks.com/js/infolinks_main.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
