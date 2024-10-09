@@ -51,7 +51,6 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
     <html lang="en" suppressHydrationWarning>
       <Head>
         <link rel="icon" href="/favicon.ico" />
-        <meta name="monetag" content="39d47a1ed28275d7ce457700dfba483d"></meta>
       </Head>
       <body 
         className={cn(
@@ -79,6 +78,7 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
             </div>
           </footer>
         </ThemeProvider>
+        <script type="text/javascript"> var infolinks_pid = 3426996; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
       </body>
     </html>
   );
