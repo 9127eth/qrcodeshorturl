@@ -79,16 +79,6 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
             </div>
           </footer>
         </ThemeProvider>
-        <Script id="infolinks-script" strategy="afterInteractive">
-          {`
-            var infolinks_pid = 3426996;
-            var infolinks_wsid = 0;
-          `}
-        </Script>
-        <Script
-          src="//resources.infolinks.com/js/infolinks_main.js"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
