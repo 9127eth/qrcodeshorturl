@@ -6,7 +6,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import Image from 'next/image';
 import Head from 'next/head';
-import Script from 'next/script';
+
 
 // Add this metadata export
 export const metadata = {
