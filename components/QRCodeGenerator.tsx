@@ -108,6 +108,7 @@ export default function QRCodeGenerator() {
 
       setShortUrl(data.shortUrl);
       setShowAd(true);
+      setShowMonetagAd(true);  // Add this line
     } catch (error) {
       console.error('Failed to shorten URL:', error);
       setErrorMessage('An error occurred while shortening the URL.');
