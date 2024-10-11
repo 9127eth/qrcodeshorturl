@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/tooltip";
 import { AlertTriangle } from "lucide-react"; // Add this import
 import AdComponent from './AdComponent';
+import MonetagAd from './MonetagAd';
 
 const validateUrl = (value: string): string | null => {
   if (validator.isURL(value, { require_protocol: false })) {
@@ -36,6 +37,7 @@ export default function QRCodeGenerator() {
   const [svgQrCodeTransparent, setSvgQrCodeTransparent] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showAd, setShowAd] = useState(false);
+  const [showMonetagAd, setShowMonetagAd] = useState(false);
 
   const handleGenerateQRCode = async (urlToGenerate?: string) => {
     setErrorMessage('');
@@ -69,6 +71,7 @@ export default function QRCodeGenerator() {
       setSvgQrCode(data.svgQrCode);
       setSvgQrCodeTransparent(data.svgQrCodeTransparent);
       setShowAd(true);
+      setShowMonetagAd(true);
     } catch (error) {
       console.error('Failed to generate QR code:', error);
       setErrorMessage('An error occurred while generating the QR code.');
@@ -248,13 +251,21 @@ export default function QRCodeGenerator() {
               setUrl('');
               setErrorMessage('');
               setShowAd(false);
+              setShowMonetagAd(false);
             }}
           >
             Clear
           </span>
         </div>
       )}
-      {showAd && <AdComponent />}
+      {showMonetagAd && (
+        <div className="mt-4">
+          <MonetagAd />
+        </div>
+      )}
+      {showAd && (
+        <AdComponent />
+      )}
     </div>
   );
 }
