@@ -16,6 +16,7 @@ import {
 import { AlertTriangle } from "lucide-react"; // Add this import
 import AdComponent from './AdComponent';
 import MonetagAd from './MonetagAd';
+import InfoSection from './InfoSection';
 
 const validateUrl = (value: string): string | null => {
   if (validator.isURL(value, { require_protocol: false })) {
@@ -145,7 +146,7 @@ export default function QRCodeGenerator() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-4 sm:p-0">
+    <div className="w-full max-w-3xl mx-auto p-4 sm:p-0">
       <div className="space-y-2 mb-6">
         <Label htmlFor="url" className="text-lg font-semibold">Enter a URL</Label>
         <Input
@@ -154,7 +155,7 @@ export default function QRCodeGenerator() {
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           onKeyDown={handleEnterPress}
-          validateUrl={validateUrl} // Pass the validateUrl function here
+          validateUrl={validateUrl}
           className="text-base"
         />
       </div>
@@ -258,6 +259,7 @@ export default function QRCodeGenerator() {
           </span>
         </div>
       )}
+      <InfoSection />
       {showMonetagAd && (
         <div className="mt-4">
           <MonetagAd />

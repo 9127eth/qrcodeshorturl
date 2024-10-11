@@ -72,3 +72,20 @@
     }
   }
 }
+
+@keyframes rotate360 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.group-hover\:rotate-360 {
+  transition: transform 0.5s ease-in-out;
+}
+
+.group:hover .group-hover\:rotate-360 {
+  transform: rotate(360deg);
+}
