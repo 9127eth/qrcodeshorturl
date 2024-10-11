@@ -11,7 +11,7 @@ export default function TermsOfService() {
       <p className="text-sm mb-4">Last updated: 9/20/2024</p>
       <div className="text-sm space-y-4">
         <p>
-          Hello Monetag!!! Welcome to qrsu.io (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). By accessing or using our URL shortening and QR code generation service (the &quot;Service&quot;), you agree to be bound by these Terms of Service (&quot;Terms&quot;). If you do not agree to these Terms, please do not use our Service.
+          Welcome to qrsu.io (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). By accessing or using our URL shortening and QR code generation service (the &quot;Service&quot;), you agree to be bound by these Terms of Service (&quot;Terms&quot;). If you do not agree to these Terms, please do not use our Service.
         </p>
 
         <h2 className="text-lg font-semibold mt-4 mb-2">1. Use of the Service</h2>
