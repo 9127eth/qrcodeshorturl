@@ -13,7 +13,7 @@ const FAQs: FAQItem[] = [
   },
   {
     question: "How Does a QR Code Work?",
-    answer: "QR codes contain information encoded in the form of black and white squares. When scanned, this pattern is decoded by a scanner (usually the camera on your phone) and redirects the user to the encoded URL or data. It's a fast, easy way to access information by simply scanning the code."
+    answer: "QR codes contain information encoded in the form of black and white squares. When scanned, this pattern is decoded by a scanner (usually the camera on your phone) and redirects the user to the encoded URL or data. It is a fast, easy way to access information by simply scanning the code."
   },
   {
     question: "What is a Short URL?",
@@ -21,11 +21,11 @@ const FAQs: FAQItem[] = [
   },
   {
     question: "How Does a Short URL Work?",
-    answer: "When you click on or share a short URL, it redirects users to the original, full-length URL. The short URL is just a 'shortcut' to the destination, making it easier to use and share. Behind the scenes, a server recognizes the short URL and automatically forwards the user to the original address."
+    answer: "When you click on or share a short URL, it redirects users to the original, full-length URL. The short URL is just a shortcut to the destination, making it easier to use and share. Behind the scenes, a server recognizes the short URL and automatically forwards the user to the original address."
   },
   {
     question: "Is My URL Safe?",
-    answer: "Yes! We use Google's Risk API to run a safety check on every URL you submit. This ensures that the URLs we shorten or turn into QR codes are safe and free from malware or phishing threats. If an unsafe URL is detected, we'll notify you so you can avoid using it."
+    answer: "Yes! We use the Google Risk API to run a safety check on every URL you submit. This ensures that the URLs we shorten or turn into QR codes are safe and free from malware or phishing threats. If an unsafe URL is detected, we will notify you so you can avoid using it."
   }
 ];
 
@@ -65,7 +65,7 @@ const InfoSection: React.FC = () => {
               </div>
               <h3 className="text-xl font-semibold">2. Safety Check</h3>
             </div>
-            <p className="text-gray-600 dark:text-gray-300">We run your link through a Google risk assessment to ensure it's safe and secure.</p>
+            <p className="text-gray-600 dark:text-gray-300">We run your link through a Google risk assessment to ensure it is safe and secure.</p>
           </div>
           <div className="p-6 rounded-lg transform hover:scale-105 transition-transform duration-300 group">
             <div className="flex items-center mb-4">
