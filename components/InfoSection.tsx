@@ -65,7 +65,7 @@ const InfoSection: React.FC = () => {
               </div>
               <h3 className="text-xl font-semibold">2. Safety Check</h3>
             </div>
-            <p className="text-gray-600 dark:text-gray-300">We run your link through a Google risk assessment to ensure it's safe and legitimate.</p>
+            <p className="text-gray-600 dark:text-gray-300">We run your link through a Google risk assessment to ensure it's safe and secure.</p>
           </div>
           <div className="p-6 rounded-lg transform hover:scale-105 transition-transform duration-300 group">
             <div className="flex items-center mb-4">
@@ -74,7 +74,7 @@ const InfoSection: React.FC = () => {
               </div>
               <h3 className="text-xl font-semibold">3. Generate</h3>
             </div>
-            <p className="text-gray-600 dark:text-gray-300">We instantly create a Short URL and a QR Code for your link.</p>
+            <p className="text-gray-600 dark:text-gray-300">We instantly create a Short URL and/or a QR Code for your link.</p>
           </div>
           <div className="p-6 rounded-lg transform hover:scale-105 transition-transform duration-300 group">
             <div className="flex items-center mb-4">

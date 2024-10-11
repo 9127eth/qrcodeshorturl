@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react';
 
+interface Window {
+  _awnlmau: () => void;
+}
+
 const MonetagAd: React.FC = () => {
   useEffect(() => {
     // Define the _awnlmau function
-    (window as any)._awnlmau = function() {
+    (window as unknown as Window)._awnlmau = function() {
       // This function can be empty or you can add any necessary logic
     };
 
@@ -14,7 +18,7 @@ const MonetagAd: React.FC = () => {
 
     return () => {
       document.body.removeChild(script);
-      delete (window as any)._awnlmau;
+      delete (window as unknown as Partial<Window>)._awnlmau;
     };
   }, []);
 
