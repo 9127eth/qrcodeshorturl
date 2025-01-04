@@ -58,7 +58,7 @@ export default function PrivacyPolicy() {
 
         <h2 className="text-lg font-semibold mt-4 mb-2">9. Contact Us</h2>
         <p>
-          If you have any questions about this Privacy Policy, please contact us on Twitter @qrsu_io.
+          If you have any questions about this Privacy Policy, please contact us at qrshorturl@gmail.com.
         </p>
 
         <p className="mt-4">

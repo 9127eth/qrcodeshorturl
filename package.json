@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "delete-unsafe": "cd $(pwd) && ts-node --compilerOptions '{\"module\":\"commonjs\"}' app/scripts/deleteUnsafeUrls.ts",
+    "check-urls": "cd $(pwd) && ts-node --compilerOptions '{\"module\":\"commonjs\"}' app/scripts/checkExistingUrls.ts",
+    "revert-safety": "cd $(pwd) && ts-node --compilerOptions '{\"module\":\"commonjs\"}' app/scripts/revertSafetyFlags.ts"
   },
   "dependencies": {
     "@google-cloud/web-risk": "^4.3.0",
@@ -17,12 +20,13 @@
     "@radix-ui/react-tooltip": "^1.1.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.7",
     "express-rate-limit": "^7.4.0",
     "firebase": "^10.13.2",
     "firebase-admin": "^12.5.0",
     "google-auth-library": "^9.14.1",
     "lucide-react": "^0.441.0",
-    "next": "14.2.12",
+    "next": "^14.2.22",
     "next-themes": "^0.3.0",
     "node-fetch": "^3.3.2",
     "qrcode": "^1.5.4",
@@ -44,6 +48,7 @@
     "eslint-config-next": "14.2.12",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
