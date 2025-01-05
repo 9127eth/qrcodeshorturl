@@ -12,7 +12,6 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 // Add imports after environment variables are loaded
 import { db } from '../../lib/firebaseAdmin';
 import * as readline from 'readline';
-import * as admin from 'firebase-admin';
 
 // Get the ThreatType enum
 const { ThreatType } = protos.google.cloud.webrisk.v1;

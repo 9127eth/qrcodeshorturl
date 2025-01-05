@@ -11,6 +11,7 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 // Add imports after environment variables are loaded
 import { db } from '../../lib/firebaseAdmin';
 import * as readline from 'readline';
+import * as admin from 'firebase-admin';
 
 // Debug environment variables
 console.log('Environment variables loaded:');
@@ -31,48 +32,66 @@ async function promptUser(question: string): Promise<boolean> {
   });
 }
 
-async function revertSafetyFlags() {
+async function deleteUnsafeMarkedUrls() {
   try {
     console.log('Attempting to connect to Firestore...');
-    const snapshot = await db.collection('urls').get();
+    const snapshot = await db.collection('urls')
+      .where('isSafe', '==', false)
+      .get();
     console.log('Successfully connected to Firestore');
     
-    const urlsToUpdate = snapshot.docs.map(doc => ({
-      id: doc.id,
-      data: doc.data()
-    }));
-
-    console.log(`Found ${urlsToUpdate.length} URLs to revert.`);
+    const unsafeUrls: { id: string, url: string, lastChecked?: string }[] = [];
     
-    const shouldProceed = await promptUser(
-      `This will revert safety flags for ${urlsToUpdate.length} URLs. Proceed? (y/N): `
-    );
+    snapshot.forEach((doc: admin.firestore.QueryDocumentSnapshot) => {
+      const data = doc.data();
+      if (data && data.longUrl) {
+        unsafeUrls.push({ 
+          id: doc.id, 
+          url: data.longUrl,
+          lastChecked: data.lastChecked
+        });
+      }
+    });
+
+    if (unsafeUrls.length === 0) {
+      console.log('No URLs marked as unsafe found.');
+      process.exit(0);
+    }
+
+    // Show the URLs that will be deleted
+    console.log('\nThe following URLs will be deleted:');
+    unsafeUrls.forEach(({ id, url, lastChecked }) => {
+      console.log(`\nDocument ID: ${id}`);
+      console.log(`URL: ${url}`);
+      if (lastChecked) {
+        console.log(`Last checked: ${lastChecked}`);
+      }
+    });
+    console.log(`\nTotal URLs to delete: ${unsafeUrls.length}`);
+
+    // Ask for confirmation
+    const shouldProceed = await promptUser('\nAre you sure you want to delete these URLs? (y/N): ');
 
     if (!shouldProceed) {
       console.log('Operation cancelled.');
       process.exit(0);
     }
 
+    // Proceed with deletion
     const batch = db.batch();
-    let count = 0;
-
-    urlsToUpdate.forEach(({ id }) => {
-      batch.update(db.collection('urls').doc(id), {
-        isSafe: true,
-        lastChecked: null
-      });
-      count++;
+    unsafeUrls.forEach(({ id }) => {
+      batch.delete(db.collection('urls').doc(id));
     });
     
     await batch.commit();
-    console.log(`\nSuccessfully reverted ${count} URLs`);
+    console.log(`\nSuccessfully deleted ${unsafeUrls.length} unsafe URLs`);
     
   } catch (error) {
-    console.error('Error reverting safety flags:', error);
+    console.error('Error deleting unsafe URLs:', error);
   } finally {
     rl.close();
     process.exit(0);
   }
 }
 
-revertSafetyFlags(); 
+deleteUnsafeMarkedUrls(); 

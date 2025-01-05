@@ -9,7 +9,8 @@
     "lint": "next lint",
     "delete-unsafe": "cd $(pwd) && ts-node --compilerOptions '{\"module\":\"commonjs\"}' app/scripts/deleteUnsafeUrls.ts",
     "check-urls": "cd $(pwd) && ts-node --compilerOptions '{\"module\":\"commonjs\"}' app/scripts/checkExistingUrls.ts",
-    "revert-safety": "cd $(pwd) && ts-node --compilerOptions '{\"module\":\"commonjs\"}' app/scripts/revertSafetyFlags.ts"
+    "revert-safety": "cd $(pwd) && ts-node --compilerOptions '{\"module\":\"commonjs\"}' app/scripts/revertSafetyFlags.ts",
+    "delete-unsafe-marked": "cd $(pwd) && ts-node --compilerOptions '{\"module\":\"commonjs\"}' app/scripts/deleteUnsafeMarkedUrls.ts"
   },
   "dependencies": {
     "@google-cloud/web-risk": "^4.3.0",
