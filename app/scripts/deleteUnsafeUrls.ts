@@ -33,7 +33,7 @@ async function promptUser(question: string): Promise<boolean> {
 }
 
 async function deleteUnsafeUrls() {
-  const unsafeUrl = 'los-gsp.online';
+  const unsafeDomains = ['los-gsp.online', 'contabostorage.com'];
   
   try {
     console.log('Attempting to connect to Firestore...');
@@ -41,12 +41,22 @@ async function deleteUnsafeUrls() {
     const snapshot = await db.collection('urls').get();
     console.log('Successfully connected to Firestore');
     
-    const unsafeUrls: { id: string, url: string }[] = [];
+    const unsafeUrls: { id: string, url: string, domain: string }[] = [];
     
     snapshot.forEach((doc: admin.firestore.QueryDocumentSnapshot) => {
       const data = doc.data();
-      if (data && data.longUrl && data.longUrl.includes(unsafeUrl)) {
-        unsafeUrls.push({ id: doc.id, url: data.longUrl });
+      if (data && data.longUrl) {
+        // Check against all unsafe domains
+        for (const domain of unsafeDomains) {
+          if (data.longUrl.includes(domain)) {
+            unsafeUrls.push({ 
+              id: doc.id, 
+              url: data.longUrl,
+              domain: domain  // Track which domain matched
+            });
+            break;  // No need to check other domains if one matches
+          }
+        }
       }
     });
 
@@ -57,8 +67,8 @@ async function deleteUnsafeUrls() {
 
     // Show the URLs that will be deleted
     console.log('\nThe following URLs will be deleted:');
-    unsafeUrls.forEach(({ id, url }) => {
-      console.log(`${id} -> ${url}`);
+    unsafeUrls.forEach(({ id, url, domain }) => {
+      console.log(`${id} -> ${url} (matches unsafe domain: ${domain})`);
     });
     console.log(`\nTotal URLs to delete: ${unsafeUrls.length}`);
 
