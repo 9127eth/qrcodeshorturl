@@ -3,13 +3,13 @@ import { db } from '@/lib/firebaseAdmin';
 import React from 'react';
 
 interface Props {
-  params: {
+  params: Promise<{
     shortCode: string;
-  };
+  }>;
 }
 
 export default async function ShortCodePage({ params }: Props) {
-  const { shortCode } = params;
+  const { shortCode } = await params;
   console.log(`Attempting to resolve shortCode: ${shortCode}`);
 
   let longUrl: string | undefined;

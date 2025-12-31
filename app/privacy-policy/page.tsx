@@ -1,5 +1,18 @@
 import React from 'react';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy - qrsu.io',
+  description: 'Privacy Policy for qrsu.io QR code generator and URL shortener service. Learn how we collect, use, and protect your information.',
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: 'https://www.qrsui.io/privacy-policy',
+  },
+};
 
 export default function PrivacyPolicy() {
   return (

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://qrcodeshorturl.com/sitemap.xml
+Sitemap: https://www.qrsui.io/sitemap.xml

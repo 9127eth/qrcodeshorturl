@@ -1,5 +1,18 @@
 import React from 'react';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service - qrsu.io',
+  description: 'Terms of Service for qrsu.io QR code generator and URL shortener service. Read our terms and conditions for using our free service.',
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: 'https://www.qrsui.io/terms-of-service',
+  },
+};
 
 export default function TermsOfService() {
   return (
