@@ -5,7 +5,6 @@ import { ReactNode } from 'react';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import Image from 'next/image';
-import Head from 'next/head';
 import Link from 'next/link';
 
 
@@ -60,6 +59,9 @@ export const metadata = {
     creator: '@qrsu_io',
     images: ['/qrsu.png'],
   },
+  icons: {
+    icon: '/favicon.ico',
+  },
   verification: {
     google: '', // Add your Google Search Console verification code here when available
   },
@@ -111,20 +113,17 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head>
-        <link rel="icon" href="/favicon.ico" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </Head>
-      <body 
+      <body
         className={cn(
           'antialiased min-h-screen flex flex-col',
           fontHeading.variable,
           fontBody.variable
         )}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex justify-between items-center p-4">
             <div className="flex items-center pt-4 pl-4">

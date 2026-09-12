@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  env: {
-    WEBRISK_API_KEY: process.env.WEBRISK_API_KEY,
-  },
   async redirects() {
     return [
       // Redirect non-www to www

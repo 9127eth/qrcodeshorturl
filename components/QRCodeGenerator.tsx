@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import validator from 'validator';
 import Image from 'next/image';
+import QRCode from 'qrcode';
 import { QrCode } from "lucide-react";
 import {
   Tooltip,
@@ -30,17 +31,45 @@ export default function QRCodeGenerator() {
   const [url, setUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [qrCode, setQrCode] = useState('');
-  const [qrCodeTransparent, setQrCodeTransparent] = useState('');
+  const [qrCodeTarget, setQrCodeTarget] = useState('');
   const [fileType, setFileType] = useState('png');
   const [isTransparent, setIsTransparent] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
-  const [svgQrCode, setSvgQrCode] = useState('');
-  const [svgQrCodeTransparent, setSvgQrCodeTransparent] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showAd, setShowAd] = useState(false);
   const [showMonetagAd, setShowMonetagAd] = useState(false);
 
-  const handleGenerateQRCode = async (urlToGenerate?: string) => {
+  useEffect(() => {
+    if (!qrCodeTarget) {
+      setQrCode('');
+      return;
+    }
+
+    let cancelled = false;
+
+    QRCode.toDataURL(qrCodeTarget, {
+      errorCorrectionLevel: 'H',
+      width: 384,
+      margin: 4,
+      color: {
+        dark: '#000000',
+        light: isTransparent ? '#00000000' : '#FFFFFFFF',
+      },
+    })
+      .then((dataUrl) => {
+        if (!cancelled) setQrCode(dataUrl);
+      })
+      .catch((error) => {
+        console.error('Failed to generate QR code:', error);
+        if (!cancelled) setErrorMessage('An error occurred while generating the QR code.');
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [qrCodeTarget, isTransparent]);
+
+  const handleGenerateQRCode = (urlToGenerate?: string) => {
     setErrorMessage('');
     const targetUrl = urlToGenerate || url;
     if (!targetUrl.trim()) {
@@ -51,32 +80,9 @@ export default function QRCodeGenerator() {
     if (validationError && !window.confirm(`${validationError}. Are you sure you want to continue?`)) {
       return;
     }
-    try {
-      const response = await fetch('/api/qrcode', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ url: targetUrl }),
-      });
-
-      const data = await response.json();
-      
-      if (!response.ok) {
-        setErrorMessage(data.error || 'An error occurred while generating the QR code.');
-        return;
-      }
-
-      setQrCode(data.qrCodeImage);
-      setQrCodeTransparent(data.qrCodeImageTransparent);
-      setSvgQrCode(data.svgQrCode);
-      setSvgQrCodeTransparent(data.svgQrCodeTransparent);
-      setShowAd(true);
-      setShowMonetagAd(true);
-    } catch (error) {
-      console.error('Failed to generate QR code:', error);
-      setErrorMessage('An error occurred while generating the QR code.');
-    }
+    setQrCodeTarget(targetUrl);
+    setShowAd(true);
+    setShowMonetagAd(true);
   };
 
   const handleShortenUrl = async () => {
@@ -101,8 +107,18 @@ export default function QRCodeGenerator() {
 
       const data = await response.json();
 
-      if (!response.ok || data.isSafe === false) {
+      if (response.status === 429) {
+        setErrorMessage('Too many requests. Please wait a moment and try again.');
+        return;
+      }
+
+      if (data.isSafe === false) {
         setErrorMessage('The URL provided is unsafe.');
+        return;
+      }
+
+      if (!response.ok) {
+        setErrorMessage(data.error || 'An error occurred while shortening the URL.');
         return;
       }
 
@@ -115,17 +131,47 @@ export default function QRCodeGenerator() {
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
+    if (!qrCodeTarget) return;
+
     const link = document.createElement('a');
-    if (fileType === 'svg') {
-      const svgContent = isTransparent ? svgQrCodeTransparent : svgQrCode;
-      const blob = new Blob([svgContent], { type: 'image/svg+xml' });
-      link.href = URL.createObjectURL(blob);
-    } else {
-      link.href = isTransparent ? qrCodeTransparent : qrCode;
+    let objectUrl: string | undefined;
+
+    try {
+      if (fileType === 'svg') {
+        const svgContent = await QRCode.toString(qrCodeTarget, {
+          type: 'svg',
+          errorCorrectionLevel: 'H',
+          width: 1024,
+          margin: 4,
+          color: {
+            dark: '#000000',
+            light: isTransparent ? '#00000000' : '#FFFFFFFF',
+          },
+        });
+        objectUrl = URL.createObjectURL(new Blob([svgContent], { type: 'image/svg+xml' }));
+        link.href = objectUrl;
+      } else {
+        link.href = await QRCode.toDataURL(qrCodeTarget, {
+          type: fileType === 'jpeg' ? 'image/jpeg' : 'image/png',
+          errorCorrectionLevel: 'H',
+          width: 1024,
+          margin: 4,
+          color: {
+            dark: '#000000',
+            light: isTransparent ? '#00000000' : '#FFFFFFFF',
+          },
+          rendererOpts: fileType === 'jpeg' ? { quality: 0.92 } : undefined,
+        });
+      }
+      link.download = `qrcode${isTransparent ? '_transparent' : ''}.${fileType}`;
+      link.click();
+    } catch (error) {
+      console.error('Failed to download QR code:', error);
+      setErrorMessage('An error occurred while preparing the download.');
+    } finally {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     }
-    link.download = `qrcode${isTransparent ? '_transparent' : ''}.${fileType}`;
-    link.click();
   };
 
   const handleCopy = async () => {
@@ -138,11 +184,10 @@ export default function QRCodeGenerator() {
     }
   };
 
-  const handleEnterPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      await handleGenerateQRCode();
-      await handleShortenUrl();
+      handleGenerateQRCode();
     }
   };
 
@@ -179,12 +224,15 @@ export default function QRCodeGenerator() {
           {qrCode && (
             <div className="mb-4 w-full flex flex-col sm:flex-row items-center justify-center">
               <div className="bg-gray-100 p-4 rounded-md">
-                <Image src={isTransparent ? qrCodeTransparent : qrCode} alt="QR Code" width={192} height={192} />
+                <Image src={qrCode} alt="QR Code" width={192} height={192} unoptimized />
               </div>
               <div className="flex flex-col items-center mt-4 sm:mt-0 sm:ml-4">
                 <select
                   value={fileType}
-                  onChange={(e) => setFileType(e.target.value)}
+                  onChange={(e) => {
+                    setFileType(e.target.value);
+                    if (e.target.value === 'jpeg') setIsTransparent(false);
+                  }}
                   className="mb-4 p-1 border rounded-md text-sm w-24" // Changed mb-2 to mb-4
                 >
                   <option value="png">png</option>
@@ -195,6 +243,7 @@ export default function QRCodeGenerator() {
                   <input
                     type="checkbox"
                     checked={isTransparent}
+                    disabled={fileType === 'jpeg'}
                     onChange={(e) => setIsTransparent(e.target.checked)}
                     className="mr-2"
                   />
@@ -249,6 +298,7 @@ export default function QRCodeGenerator() {
             className="text-sm text-primary cursor-pointer hover:underline"
             onClick={() => {
               setQrCode('');
+              setQrCodeTarget('');
               setShortUrl('');
               setUrl('');
               setErrorMessage('');

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "fluid": true,
+  "functions": {
+    "app/*/route.ts": {
+      "maxDuration": 5
+    },
+    "pages/api/shorten.ts": {
+      "maxDuration": 10
+    }
+  }
+}

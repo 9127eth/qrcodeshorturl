@@ -25,7 +25,7 @@ const FAQs: FAQItem[] = [
   },
   {
     question: "Is My URL Safe?",
-    answer: "Yes! We use the Google Risk API to run a safety check on every URL you submit. This ensures that the URLs we shorten or turn into QR codes are safe and free from malware or phishing threats. If an unsafe URL is detected, we will notify you so you can avoid using it."
+    answer: "Yes! We use the Google Risk API to run a safety check on every URL you shorten. This helps keep shortened links free from malware or phishing threats. If an unsafe URL is detected, we will notify you so you can avoid using it. QR codes are generated in your browser from the URL you enter."
   }
 ];
 
@@ -65,7 +65,7 @@ const InfoSection: React.FC = () => {
               </div>
               <h3 className="text-xl font-semibold">2. Safety Check</h3>
             </div>
-            <p className="text-gray-600 dark:text-gray-300">We run your link through a Google risk assessment to ensure it is safe and secure.</p>
+            <p className="text-gray-600 dark:text-gray-300">When you create a short URL, we run the destination through a Google risk assessment before saving it.</p>
           </div>
           <div className="p-6 rounded-lg transform hover:scale-105 transition-transform duration-300 group">
             <div className="flex items-center mb-4">
