@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Analytics } from '@vercel/analytics/next';
 
 
 // Add this metadata export
@@ -143,6 +144,7 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
             </div>
           </footer>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
