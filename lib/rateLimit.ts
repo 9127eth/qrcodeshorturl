@@ -1,7 +1,8 @@
+import type { Request } from 'express';
 import rateLimit from 'express-rate-limit';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-function clientIp(req: NextApiRequest): string {
+function clientIp(req: Request): string {
   const forwarded = req.headers['x-forwarded-for'];
   if (typeof forwarded === 'string' && forwarded.length > 0) {
     return forwarded.split(',')[0].trim();
