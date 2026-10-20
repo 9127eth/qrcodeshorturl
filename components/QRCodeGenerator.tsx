@@ -1,67 +1,52 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { AlertTriangle } from "lucide-react";
+import validator from "validator";
+import Image from "next/image";
+import QRCode from "qrcode";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import validator from 'validator';
-import Image from 'next/image';
-import QRCode from 'qrcode';
-import { QrCode } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { AlertTriangle } from "lucide-react"; // Add this import
-import AdComponent from './AdComponent';
-import MonetagAd from './MonetagAd';
-import InfoSection from './InfoSection';
 
 const validateUrl = (value: string): string | null => {
   if (validator.isURL(value, { require_protocol: false })) {
     return null;
-  } else {
-    return "This doesn't look like a valid URL";
   }
+  return "This doesn't look like a valid URL";
 };
 
 export default function QRCodeGenerator() {
-  const [url, setUrl] = useState('');
-  const [shortUrl, setShortUrl] = useState('');
-  const [qrCode, setQrCode] = useState('');
-  const [qrCodeTarget, setQrCodeTarget] = useState('');
-  const [fileType, setFileType] = useState('png');
+  const [url, setUrl] = useState("");
+  const [qrCode, setQrCode] = useState("");
+  const [qrCodeTarget, setQrCodeTarget] = useState("");
+  const [fileType, setFileType] = useState("png");
   const [isTransparent, setIsTransparent] = useState(false);
-  const [copySuccess, setCopySuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [showAd, setShowAd] = useState(false);
-  const [showMonetagAd, setShowMonetagAd] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (!qrCodeTarget) {
-      setQrCode('');
+      setQrCode("");
       return;
     }
 
     let cancelled = false;
 
     QRCode.toDataURL(qrCodeTarget, {
-      errorCorrectionLevel: 'H',
+      errorCorrectionLevel: "H",
       width: 384,
       margin: 4,
       color: {
-        dark: '#000000',
-        light: isTransparent ? '#00000000' : '#FFFFFFFF',
+        dark: "#000000",
+        light: isTransparent ? "#00000000" : "#FFFFFFFF",
       },
     })
       .then((dataUrl) => {
         if (!cancelled) setQrCode(dataUrl);
       })
       .catch((error) => {
-        console.error('Failed to generate QR code:', error);
-        if (!cancelled) setErrorMessage('An error occurred while generating the QR code.');
+        console.error("Failed to generate QR code:", error);
+        if (!cancelled) setErrorMessage("An error occurred while generating the QR code.");
       });
 
     return () => {
@@ -69,11 +54,11 @@ export default function QRCodeGenerator() {
     };
   }, [qrCodeTarget, isTransparent]);
 
-  const handleGenerateQRCode = (urlToGenerate?: string) => {
-    setErrorMessage('');
-    const targetUrl = urlToGenerate || url;
-    if (!targetUrl.trim()) {
-      setErrorMessage('Please add a valid URL');
+  const handleGenerateQRCode = () => {
+    setErrorMessage("");
+    const targetUrl = url.trim();
+    if (!targetUrl) {
+      setErrorMessage("Please add a valid URL");
       return;
     }
     const validationError = validateUrl(targetUrl);
@@ -81,243 +66,131 @@ export default function QRCodeGenerator() {
       return;
     }
     setQrCodeTarget(targetUrl);
-    setShowAd(true);
-    setShowMonetagAd(true);
-  };
-
-  const handleShortenUrl = async () => {
-    setErrorMessage('');
-    if (!url.trim()) {
-      setErrorMessage('Please add a valid URL');
-      return;
-    }
-    const validationError = validateUrl(url);
-    if (validationError && !window.confirm(`${validationError}. Are you sure you want to continue?`)) {
-      return;
-    }
-
-    try {
-      const response = await fetch('/api/shorten', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ longUrl: url }),
-      });
-
-      const data = await response.json();
-
-      if (response.status === 429) {
-        setErrorMessage('Too many requests. Please wait a moment and try again.');
-        return;
-      }
-
-      if (data.isSafe === false) {
-        setErrorMessage('The URL provided is unsafe.');
-        return;
-      }
-
-      if (!response.ok) {
-        setErrorMessage(data.error || 'An error occurred while shortening the URL.');
-        return;
-      }
-
-      setShortUrl(data.shortUrl);
-      setShowAd(true);
-      setShowMonetagAd(true);  // Add this line
-    } catch (error) {
-      console.error('Failed to shorten URL:', error);
-      setErrorMessage('An error occurred while shortening the URL.');
-    }
   };
 
   const handleDownload = async () => {
     if (!qrCodeTarget) return;
 
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     let objectUrl: string | undefined;
 
     try {
-      if (fileType === 'svg') {
+      if (fileType === "svg") {
         const svgContent = await QRCode.toString(qrCodeTarget, {
-          type: 'svg',
-          errorCorrectionLevel: 'H',
+          type: "svg",
+          errorCorrectionLevel: "H",
           width: 1024,
           margin: 4,
           color: {
-            dark: '#000000',
-            light: isTransparent ? '#00000000' : '#FFFFFFFF',
+            dark: "#000000",
+            light: isTransparent ? "#00000000" : "#FFFFFFFF",
           },
         });
-        objectUrl = URL.createObjectURL(new Blob([svgContent], { type: 'image/svg+xml' }));
+        objectUrl = URL.createObjectURL(new Blob([svgContent], { type: "image/svg+xml" }));
         link.href = objectUrl;
       } else {
         link.href = await QRCode.toDataURL(qrCodeTarget, {
-          type: fileType === 'jpeg' ? 'image/jpeg' : 'image/png',
-          errorCorrectionLevel: 'H',
+          type: fileType === "jpeg" ? "image/jpeg" : "image/png",
+          errorCorrectionLevel: "H",
           width: 1024,
           margin: 4,
           color: {
-            dark: '#000000',
-            light: isTransparent ? '#00000000' : '#FFFFFFFF',
+            dark: "#000000",
+            light: isTransparent ? "#00000000" : "#FFFFFFFF",
           },
-          rendererOpts: fileType === 'jpeg' ? { quality: 0.92 } : undefined,
+          rendererOpts: fileType === "jpeg" ? { quality: 0.92 } : undefined,
         });
       }
-      link.download = `qrcode${isTransparent ? '_transparent' : ''}.${fileType}`;
+      link.download = `qrcode${isTransparent ? "_transparent" : ""}.${fileType}`;
       link.click();
     } catch (error) {
-      console.error('Failed to download QR code:', error);
-      setErrorMessage('An error occurred while preparing the download.');
+      console.error("Failed to download QR code:", error);
+      setErrorMessage("An error occurred while preparing the download.");
     } finally {
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     }
   };
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(shortUrl);
-      setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
-    } catch (err) {
-      console.error('Failed to copy text: ', err);
-    }
-  };
-
-  const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
+  const handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
       handleGenerateQRCode();
     }
   };
 
+  const handleClear = () => {
+    setQrCode("");
+    setQrCodeTarget("");
+    setUrl("");
+    setErrorMessage("");
+  };
+
   return (
-    <div className="w-full max-w-3xl mx-auto p-4 sm:p-0">
-      <div className="space-y-2 mb-6">
-        <Label htmlFor="url" className="text-lg font-semibold">Enter a URL</Label>
+    <div>
+      <div className="mb-4 space-y-2 text-left">
+        <Label htmlFor="url" className="text-base font-semibold">
+          Enter a URL
+        </Label>
         <Input
           id="url"
           placeholder="https://example.com"
           value={url}
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(event) => setUrl(event.target.value)}
           onKeyDown={handleEnterPress}
           validateUrl={validateUrl}
           className="text-base"
         />
       </div>
-      <div className="flex space-x-2 mb-6">
-        <Button onClick={() => handleGenerateQRCode()} className="flex-1 text-base font-semibold">
-          Get QR Code
-        </Button>
-        <Button onClick={() => handleShortenUrl()} variant="outline" className="flex-1 text-base font-semibold">
-          Get Short URL
-        </Button>
-      </div>
+      <Button onClick={handleGenerateQRCode} className="w-full text-base font-semibold sm:w-auto">
+        Get QR code
+      </Button>
       {errorMessage && (
-        <div className="flex items-center space-x-2 text-red-500 text-sm mt-2">
+        <div className="mt-3 flex items-center gap-2 text-sm text-destructive">
           <AlertTriangle className="h-4 w-4" />
           <span>{errorMessage}</span>
         </div>
       )}
-      {(qrCode || shortUrl) && (
-        <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-          {qrCode && (
-            <div className="mb-4 w-full flex flex-col sm:flex-row items-center justify-center">
-              <div className="bg-gray-100 p-4 rounded-md">
-                <Image src={qrCode} alt="QR Code" width={192} height={192} unoptimized />
-              </div>
-              <div className="flex flex-col items-center mt-4 sm:mt-0 sm:ml-4">
-                <select
-                  value={fileType}
-                  onChange={(e) => {
-                    setFileType(e.target.value);
-                    if (e.target.value === 'jpeg') setIsTransparent(false);
-                  }}
-                  className="mb-4 p-1 border rounded-md text-sm w-24" // Changed mb-2 to mb-4
-                >
-                  <option value="png">png</option>
-                  <option value="jpeg">jpeg</option>
-                  <option value="svg">svg</option>
-                </select>
-                <label className="flex items-center mb-4 text-sm"> {/* Changed mb-2 to mb-4 */}
-                  <input
-                    type="checkbox"
-                    checked={isTransparent}
-                    disabled={fileType === 'jpeg'}
-                    onChange={(e) => setIsTransparent(e.target.checked)}
-                    className="mr-2"
-                  />
-                  no background
-                </label>
-                <Button
-                  variant="outline"
-                  className="text-sm font-semibold"
-                  onClick={handleDownload}
-                >
-                  Download
-                </Button>
-              </div>
+      {qrCode && (
+        <div className="mt-6 rounded-xl border bg-card p-6">
+          <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-center">
+            <div className="rounded-md bg-white p-4">
+              <Image src={qrCode} alt="QR code" width={192} height={192} unoptimized />
             </div>
-          )}
-          {shortUrl && (
-            <div className="mt-4 w-full">
-              <h2 className="text-lg font-semibold mb-2">Short URL:</h2>
-              <div className="flex items-center space-x-2">
-                <Input value={shortUrl} readOnly className="text-base" />
-                <Button 
-                  onClick={handleCopy} 
-                  className="text-sm font-semibold"
-                  disabled={copySuccess}
-                >
-                  {copySuccess ? 'Copied!' : 'Copy'}
-                </Button>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        onClick={() => handleGenerateQRCode(shortUrl)}
-                        variant="outline"
-                        className="bg-white p-2 h-10 w-10 flex items-center justify-center"
-                      >
-                        <QrCode className="h-6 w-6" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Get a QR code for this short URL</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
+            <div className="flex flex-col items-center gap-4">
+              <select
+                value={fileType}
+                aria-label="Download format"
+                onChange={(event) => {
+                  setFileType(event.target.value);
+                  if (event.target.value === "jpeg") setIsTransparent(false);
+                }}
+                className="h-10 w-28 rounded-md border border-input bg-background px-2 text-sm"
+              >
+                <option value="png">png</option>
+                <option value="jpeg">jpeg</option>
+                <option value="svg">svg</option>
+              </select>
+              <label className="flex items-center text-sm">
+                <input
+                  type="checkbox"
+                  checked={isTransparent}
+                  disabled={fileType === "jpeg"}
+                  onChange={(event) => setIsTransparent(event.target.checked)}
+                  className="mr-2"
+                />
+                no background
+              </label>
+              <Button variant="outline" className="text-sm font-semibold" onClick={handleDownload}>
+                Download
+              </Button>
             </div>
-          )}
+          </div>
+          <div className="mt-4 text-center">
+            <button type="button" className="text-sm text-primary hover:underline" onClick={handleClear}>
+              Clear
+            </button>
+          </div>
         </div>
-      )}
-      {(qrCode || shortUrl) && (
-        <div className="mt-4 text-center">
-          <span 
-            className="text-sm text-primary cursor-pointer hover:underline"
-            onClick={() => {
-              setQrCode('');
-              setQrCodeTarget('');
-              setShortUrl('');
-              setUrl('');
-              setErrorMessage('');
-              setShowAd(false);
-              setShowMonetagAd(false);
-            }}
-          >
-            Clear
-          </span>
-        </div>
-      )}
-      <InfoSection />
-      {showMonetagAd && (
-        <div className="mt-4">
-          <MonetagAd />
-        </div>
-      )}
-      {showAd && (
-        <AdComponent />
       )}
     </div>
   );

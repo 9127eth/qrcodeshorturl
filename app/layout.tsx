@@ -11,9 +11,9 @@ import { Analytics } from '@vercel/analytics/next';
 
 // Add this metadata export
 export const metadata = {
-  title: 'qrsu.io - QR Code & URL Shortener',
-  description: 'Generate QR codes and shorten URLs quickly and securely.',
-  keywords: ['qrsu.io','qrsu','Free QR Codes', 'Free QR Code Generator', 'Free URL Shortener', 'QR Code Generator', 'Custom QR Codes', 'Dynamic QR Codes', 'QR Code Creator', 'Create QR Codes', 'QR Code Scanner', 'Trackable QR Codes', 'QR Code Marketing', 'QR Code Design', 'Best QR Code Generator', 'Free Short URL', 'Short Codes', 'URL Shortener', 'Custom Short URLs', 'URL Redirection', 'Link Shortener', 'Short URL Service', 'Short Link Creator', 'Free Link Shortener', 'Dynamic URL Shortener', 'QR Codes for Business', 'QR Code API', 'Free Link Generator', 'Trackable URLs', 'Secure URL Shortener', 'Branded QR Codes', 'QR Code Solutions'],
+  title: 'qrsu.io - NFC tools for iPhone',
+  description: 'Read, write, and erase NFC tags with the qrsu.io app for iPhone. Write a link onto a tag, or clear it and reuse it.',
+  keywords: ['qrsu.io', 'qrsu', 'NFC tools', 'NFC tag reader', 'NFC tag writer', 'erase NFC tag', 'write URL to NFC', 'iPhone NFC app', 'QR code app'],
   authors: [{ name: 'qrsu.io' }],
   creator: 'qrsu.io',
   publisher: 'qrsu.io',
@@ -38,8 +38,8 @@ export const metadata = {
     },
   },
   openGraph: {
-    title: 'qrsu.io - QR Code & URL Shortener',
-    description: 'Create QR codes and short URLs quickly and securely with qrsu.io.',
+    title: 'qrsu.io - NFC tools for iPhone',
+    description: 'Read, write, and erase NFC tags with the qrsu.io app. Write a link onto a tag, or clear it and reuse it.',
     url: 'https://www.qrsui.io',
     siteName: 'qrsu.io',
     images: [
@@ -47,7 +47,7 @@ export const metadata = {
         url: '/qrsu.png',
         width: 1200,
         height: 630,
-        alt: 'qrsu.io - QR Code & URL Shortener',
+        alt: 'qrsu.io NFC tools for iPhone',
       },
     ],
     locale: 'en_US',
@@ -55,8 +55,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'qrsu.io - QR Code & URL Shortener',
-    description: 'Create QR codes and short URLs quickly and securely with qrsu.io.',
+    title: 'qrsu.io - NFC tools for iPhone',
+    description: 'Read, write, and erase NFC tags with the qrsu.io app. Write a link onto a tag, or clear it and reuse it.',
     creator: '@qrsu_io',
     images: ['/qrsu.png'],
   },
@@ -89,10 +89,10 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'qrsu.io',
-    description: 'Generate QR codes and shorten URLs quickly and securely.',
+    description: 'Read, write, and erase NFC tags with the qrsu.io app for iPhone.',
     url: 'https://www.qrsui.io',
     applicationCategory: 'UtilitiesApplication',
-    operatingSystem: 'Web Browser',
+    operatingSystem: 'iOS 17.6 or later',
     offers: {
       '@type': 'Offer',
       price: '0',
@@ -104,11 +104,11 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
       url: 'https://www.qrsui.io',
     },
     featureList: [
-      'Free QR Code Generation',
-      'URL Shortening Service',
-      'Safe URL Validation',
-      'Multiple Download Formats',
-      'No Registration Required'
+      'Read NFC tags',
+      'Write a URL to an NFC tag',
+      'Erase NFC tags',
+      'QR code creation',
+      'URL shortener in the iOS app'
     ],
   };
 

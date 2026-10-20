@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, Link, Zap, Shield, Share2 } from 'lucide-react';
+"use client";
+
+import React, { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface FAQItem {
   question: string;
@@ -8,110 +10,79 @@ interface FAQItem {
 
 const FAQs: FAQItem[] = [
   {
-    question: "What is a QR Code?",
-    answer: "A QR Code (Quick Response Code) is a two-dimensional barcode that can store a variety of information, including URLs. When scanned with a smartphone camera or a QR code scanner, it takes users directly to the encoded URL without needing to type anything manually."
+    question: "What can the app do with an NFC tag?",
+    answer:
+      "It can read a tag, write to a tag, and erase a tag. That is the full NFC toolset listed for qrsu.io on the App Store.",
   },
   {
-    question: "How Does a QR Code Work?",
-    answer: "QR codes contain information encoded in the form of black and white squares. When scanned, this pattern is decoded by a scanner (usually the camera on your phone) and redirects the user to the encoded URL or data. It is a fast, easy way to access information by simply scanning the code."
+    question: "How do I put a website on a tag?",
+    answer:
+      "Write a URL from the app. If you leave off http:// or https://, the app adds https:// when it writes the tag.",
   },
   {
-    question: "What is a Short URL?",
-    answer: "A Short URL is a condensed version of a longer website address. Instead of sharing a long and complicated URL, a short URL makes it more manageable and easier to share, especially on platforms with character limits or in printed materials."
+    question: "Which devices are supported?",
+    answer:
+      "The app is free on the App Store for iPhone and iPad and requires iOS 17.6 or later. Reading, writing, and erasing NFC tags requires an iPhone.",
   },
   {
-    question: "How Does a Short URL Work?",
-    answer: "When you click on or share a short URL, it redirects users to the original, full-length URL. The short URL is just a shortcut to the destination, making it easier to use and share. Behind the scenes, a server recognizes the short URL and automatically forwards the user to the original address."
+    question: "Can I create a short link on this website?",
+    answer:
+      "No. New short links are created in the qrsu.io app. You can still make a QR code on this page. Short links that were already created still open.",
   },
   {
-    question: "Is My URL Safe?",
-    answer: "Yes! We use the Google Risk API to run a safety check on every URL you shorten. This helps keep shortened links free from malware or phishing threats. If an unsafe URL is detected, we will notify you so you can avoid using it. QR codes are generated in your browser from the URL you enter."
-  }
+    question: "What else is in the app?",
+    answer:
+      "Along with NFC, the app creates QR codes for links, contact info, and more, and it includes a URL shortener.",
+  },
 ];
 
 const InfoSection: React.FC = () => {
   const [openFAQs, setOpenFAQs] = useState<Set<number>>(new Set());
 
   const toggleFAQ = (index: number) => {
-    setOpenFAQs((prevOpenFAQs) => {
-      const newOpenFAQs = new Set(prevOpenFAQs);
-      if (newOpenFAQs.has(index)) {
-        newOpenFAQs.delete(index);
+    setOpenFAQs((current) => {
+      const next = new Set(current);
+      if (next.has(index)) {
+        next.delete(index);
       } else {
-        newOpenFAQs.add(index);
+        next.add(index);
       }
-      return newOpenFAQs;
+      return next;
     });
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-16 space-y-16">
-      <section className="space-y-12">
-        <h2 className="text-3xl font-bold text-center mb-8">How It Works</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="p-6 rounded-lg transform hover:scale-105 transition-transform duration-300 group">
-            <div className="flex items-center mb-4">
-              <div className="bg-blue-500 p-3 rounded-full mr-4 group-hover:rotate-360 transition-transform duration-300">
-                <Link className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold">1. Input a URL</h3>
-            </div>
-            <p className="text-gray-600 dark:text-gray-300">Enter the URL you want to shorten or generate a QR code for into the input field.</p>
-          </div>
-          <div className="p-6 rounded-lg transform hover:scale-105 transition-transform duration-300 group">
-            <div className="flex items-center mb-4">
-              <div className="bg-yellow-500 p-3 rounded-full mr-4 group-hover:rotate-360 transition-transform duration-300">
-                <Shield className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold">2. Safety Check</h3>
-            </div>
-            <p className="text-gray-600 dark:text-gray-300">When you create a short URL, we run the destination through a Google risk assessment before saving it.</p>
-          </div>
-          <div className="p-6 rounded-lg transform hover:scale-105 transition-transform duration-300 group">
-            <div className="flex items-center mb-4">
-              <div className="bg-green-500 p-3 rounded-full mr-4 group-hover:rotate-360 transition-transform duration-300">
-                <Zap className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold">3. Generate</h3>
-            </div>
-            <p className="text-gray-600 dark:text-gray-300">We instantly create a Short URL and/or a QR Code for your link.</p>
-          </div>
-          <div className="p-6 rounded-lg transform hover:scale-105 transition-transform duration-300 group">
-            <div className="flex items-center mb-4">
-              <div className="bg-red-500 p-3 rounded-full mr-4 group-hover:rotate-360 transition-transform duration-300">
-                <Share2 className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold">4. Share</h3>
-            </div>
-            <p className="text-gray-600 dark:text-gray-300">Copy the short URL or download the QR code and share it however you like.</p>
-          </div>
-        </div>
-      </section>
+    <section className="mx-auto max-w-3xl py-16">
+      <h2 className="mb-8 text-center text-3xl font-bold">Questions</h2>
+      <div className="space-y-2">
+        {FAQs.map((faq, index) => {
+          const isOpen = openFAQs.has(index);
+          const panelId = `faq-panel-${index}`;
+          const buttonId = `faq-button-${index}`;
 
-      <section className="space-y-8"> {/* Increased space-y from 6 to 8 */}
-        <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2> {/* Increased mb from 8 to 12 */}
-        <div className="space-y-6"> {/* Increased space-y from 4 to 6 */}
-          {FAQs.map((faq, index) => (
-            <div key={index} className="border-b border-gray-200 pb-6"> {/* Increased pb from 4 to 6 */}
+          return (
+            <div key={faq.question} className="border-b">
               <button
-                className="flex justify-between items-center w-full text-left"
+                id={buttonId}
+                type="button"
+                className="flex w-full items-center justify-between gap-4 py-4 text-left"
+                aria-expanded={isOpen}
+                aria-controls={isOpen ? panelId : undefined}
                 onClick={() => toggleFAQ(index)}
               >
                 <span className="text-lg font-semibold">{faq.question}</span>
-                {openFAQs.has(index) ? <ChevronUp /> : <ChevronDown />}
+                {isOpen ? <ChevronUp className="shrink-0" /> : <ChevronDown className="shrink-0" />}
               </button>
-              <div
-                className={`mt-2 overflow-hidden transition-all duration-300 ease-in-out ${
-                  openFAQs.has(index) ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                }`}
-              >
-                <p className="text-gray-600">{faq.answer}</p>
-              </div>
+              {isOpen && (
+                <div id={panelId} role="region" aria-labelledby={buttonId} className="pb-4">
+                  <p className="text-muted-foreground">{faq.answer}</p>
+                </div>
+              )}
             </div>
-          ))}
-        </div>
-      </section>
-    </div>
+          );
+        })}
+      </div>
+    </section>
   );
 };
 
